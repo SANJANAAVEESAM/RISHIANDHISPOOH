@@ -3,9 +3,7 @@ import { COUPLE } from "./data";
 
 const MENU_LINKS = [
   { href: "#home", label: "Home" },
-  { href: "#chapter-one", label: "Story" },
   { href: "#events", label: "Events" },
-  { href: "#rsvp", label: "RSVP" },
   { href: "#details", label: "Additional details" },
   { href: "#faqs", label: "FAQs" },
 ];
@@ -60,13 +58,6 @@ export function FloatingNav({ visible }: { visible: boolean }) {
         </button>
 
         <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={() => go("#rsvp")}
-            className="rounded-full bg-bronze px-5 py-2.5 font-display text-base leading-none text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.98]"
-          >
-            Submit RSVP
-          </button>
           <button
             type="button"
             onClick={() => setMenuOpen(true)}

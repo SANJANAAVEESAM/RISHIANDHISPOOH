@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { SITE_URL } from "@/components/wedding/data";
+import { COUPLE, SITE_URL } from "@/components/wedding/data";
 import backdrop from "../assets/backdrop.jpg";
 
 
@@ -76,19 +76,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Lasya & Avyay" },
-      { name: "description", content: "The wedding of Lasya & Avyay — October 29–31, 2026, Charlotte, North Carolina." },
-      { property: "og:title", content: "Lasya & Avyay" },
-      { property: "og:description", content: "The wedding of Lasya & Avyay — October 29–31, 2026, Charlotte, North Carolina." },
+      { title: `${COUPLE.bride} & ${COUPLE.groom}` },
+      { name: "description", content: `The wedding of ${COUPLE.bride} & ${COUPLE.groom}.` },
+      { property: "og:title", content: `${COUPLE.bride} & ${COUPLE.groom}` },
+      { property: "og:description", content: `The wedding of ${COUPLE.bride} & ${COUPLE.groom}.` },
       { property: "og:type", content: "website" },
       // Absolute, and a purpose-made 1200x630 card rather than the portrait
       // photograph — sharing apps crop 1.91:1, and a portrait loses their faces.
       { property: "og:image", content: `${SITE_URL}/share.jpg` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Lasya and Avyay on the beach at sunset" },
+      { property: "og:image:alt", content: `${COUPLE.bride} and ${COUPLE.groom}` },
       { property: "og:url", content: SITE_URL },
-      { property: "og:site_name", content: "Lasya & Avyay" },
+      { property: "og:site_name", content: `${COUPLE.bride} & ${COUPLE.groom}` },
       { name: "twitter:image", content: `${SITE_URL}/share.jpg` },
       { name: "twitter:card", content: "summary_large_image" },
       // Unlisted rather than private — see public/robots.txt.
@@ -147,8 +147,8 @@ function RootComponent() {
           <img
             src={backdrop}
             alt=""
-            width={653}
-            height={1000}
+            width={800}
+            height={1103}
             className="h-full w-full object-cover object-center"
             style={{ opacity: 0.34 }}
           />

@@ -1,5 +1,5 @@
 
-export const COUPLE = { bride: "Lasya", groom: "Avyay" };
+export const COUPLE = { bride: "Pooja", groom: "Rithvick" };
 
 /** ⚠️ Year is unconfirmed (reference doc said 2027) — change it here only. */
 export const WEDDING_YEAR = 2026;
@@ -7,19 +7,20 @@ export const WEDDING_YEAR = 2026;
 const pad = (n: number) => String(n).padStart(2, "0");
 
 /**
- * A wall-clock Eastern time, as an instant.
+ * A wall-clock India time, as an instant.
  *
- * Late October sits before US daylight saving ends — the first Sunday in
- * November — so these dates are EDT, UTC-4, in 2026 and 2027 alike. Month is
- * zero-based, matching Date.
+ * Every celebration is in Telangana, so times are IST — UTC+5:30, with no
+ * daylight saving to account for. Written as an explicit offset rather than
+ * arithmetic on UTC so the offset is reviewable. Month is zero-based, matching
+ * Date.
  */
-const ET = (month: number, day: number, hour: number, minute: number) =>
-  new Date(`${WEDDING_YEAR}-${pad(month + 1)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00-04:00`);
+const IST = (month: number, day: number, hour: number, minute: number) =>
+  new Date(`${WEDDING_YEAR}-${pad(month + 1)}-${pad(day)}T${pad(hour)}:${pad(minute)}:00+05:30`);
 
-/** Muhurtham — Oct 31, 7:25 PM Eastern. */
-export const WEDDING_DATE = ET(9, 31, 19, 25);
+/** Muhurtham — 27 August, 10:05 AM IST. */
+export const WEDDING_DATE = IST(7, 27, 10, 5);
 
-export const WEDDING_DATE_RANGE = `October 29–31, ${WEDDING_YEAR}`;
+export const WEDDING_DATE_RANGE = `August 15–27, ${WEDDING_YEAR}`;
 
 export const WHATSAPP_NUMBER = "18326686089";
 
@@ -30,7 +31,6 @@ export const WHATSAPP_NUMBER = "18326686089";
  */
 export const SITE_URL = "https://thelavstory.com";
 
-export const CONTACT_EMAIL = "lasyaandavyay@gmail.com";
 
 /** Credited in the closing line. */
 export const DESIGNER = "Sanjana Veesam";
@@ -47,13 +47,8 @@ export const CONTACTS: {
   display: string;
   whatsapp?: string;
 }[] = [
-  { name: COUPLE.bride, tel: "+18326689442", display: "+1 832 668 9442" },
-  {
-    name: COUPLE.groom,
-    tel: "+17049066859",
-    display: "+1 704 906 6859",
-    whatsapp: "+919550634521",
-  },
+  { name: COUPLE.bride, tel: "+919014545488", display: "+91 90145 45488" },
+  { name: COUPLE.groom, tel: "+918500603422", display: "+91 85006 03422" },
 ];
 
 import type { EventTheme } from "./eventThemes";
@@ -65,30 +60,7 @@ import type { EventTheme } from "./eventThemes";
  * Each folder must be shared so that anyone with the link can *contribute*, not
  * just view — otherwise the button leads guests to a wall.
  */
-export const GALLERY_FOLDERS: { label: string; url: string }[] = [
-  {
-    label: "Haldi & Mehendi",
-    url: "https://drive.google.com/drive/folders/1Rb5ErOBBV1mQTkxFFEB5_CsrUfCBRxMI?usp=drive_link",
-  },
-  {
-    label: "Pellikuthuru",
-    url: "https://drive.google.com/drive/folders/1smOuRVF_4XYjHh0zeiK7V9qyUKITsvlJ?usp=drive_link",
-  },
-  {
-    label: "Pellikoduku",
-    url: "https://drive.google.com/drive/folders/1XkwXCSAN68BDPdSGGNjUnxXIWKdX1ue4?usp=drive_link",
-  },
-  {
-    label: "Sangeet & Cocktail Night",
-    url: "https://drive.google.com/drive/folders/120l9T4qSeIYm4RiQ7KfWzW3qdNidNsPr?usp=sharing",
-  },
-  {
-    // TODO(photos): supplied without a label — assumed to be the wedding, being
-    // the only celebration left. Confirm before the invitations go out.
-    label: "Wedding Ceremony",
-    url: "https://drive.google.com/drive/folders/1LRC3mlJclf4CjmCsnI8_ddAj9hBAZj36?usp=drive_link",
-  },
-];
+export const GALLERY_FOLDERS: { label: string; url: string }[] = [];
 
 /**
  * A dress code the sheet can draw rather than merely state.
@@ -153,128 +125,103 @@ export type EventDay = {
   events: WeddingEvent[];
 };
 
+/** Three of the four celebrations share this venue. */
+const VENUE_RUSTIC: Venue = {
+          name: "Rustic Vogue",
+          address: "Unnamed Road, Cheeriyal, Telangana 501303",
+          mapsQuery: "Rustic Vogue, Cheeriyal, Telangana 501303",
+        };
+
 export const EVENT_DAYS: EventDay[] = [
   {
-    date: "29 October",
-    weekday: "Thursday",
+    date: "15 August",
+    weekday: "Saturday",
+    events: [
+      {
+        slug: "engagement",
+        name: "Engagement",
+        themeKey: "pellikuthuru",
+        time: "9:00 AM",
+        photosUrl: undefined,
+        venue: {
+          name: "Sree Vedha Banquet Hall",
+          address: "Above Ratnadeep, Kothapet, Hyderabad",
+          mapsQuery: "Sree Vedha Banquet Hall, Kothapet, Hyderabad",
+        },
+        start: IST(7, 15, 9, 0),
+        end: IST(7, 15, 12, 0),
+      },
+    ],
+  },
+  {
+    date: "19 August",
+    weekday: "Wednesday",
     events: [
       {
         slug: "haldi",
         name: "Haldi",
         themeKey: "carnival",
-        theme: "Carnival",
-        time: "11:00 AM onwards",
-        dressCode: {
-          label: "Festive solid colours",
-          note: "Come dressed in festive solid colours — fuchsia, coral, emerald, teal, royal blue, purple, orange. Mirror work and playful accessories are encouraged.",
-        },
-        photosUrl: GALLERY_FOLDERS[0].url,
-        venue: { name: "To be announced" }, // TODO(venue)
-        start: ET(9, 29, 11, 0),
-        end: ET(9, 29, 15, 0),
-      },
-      {
-        slug: "mehendi",
-        name: "Mehendi",
-        themeKey: "mehendi",
-        theme: "Carnival",
-        time: "4:00 PM onwards",
-        followsPrevious: true,
-        dressCode: {
-          label: "Festive solid colours",
-          note: "Come dressed in festive solid colours — fuchsia, coral, emerald, teal, royal blue, purple, orange. Mirror work and playful accessories are encouraged.",
-        },
-        photosUrl: GALLERY_FOLDERS[0].url,
-        sharesVenueWithPrevious: true,
-        venue: { name: "To be announced" }, // TODO(venue)
-        start: ET(9, 29, 16, 0),
-        end: ET(9, 29, 21, 0),
-      },
-    ],
-  },
-  {
-    date: "30 October",
-    weekday: "Friday",
-    events: [
-      {
-        slug: "pellikuthuru",
-        name: "Pellikuthuru",
-        themeKey: "pellikuthuru",
-        theme: "Vintage",
-        time: "9:30 AM onwards",
-        photosUrl: GALLERY_FOLDERS[1].url,
-        venue: { name: "To be announced" }, // TODO(venue)
-        start: ET(9, 30, 9, 30),
-        end: ET(9, 30, 13, 0),
+        time: "9:00 AM",
+        photosUrl: undefined,
+        venue: VENUE_RUSTIC,
+        start: IST(7, 19, 9, 0),
+        end: IST(7, 19, 12, 0),
       },
       {
         slug: "sangeet",
-        name: "Sangeet & Cocktail Night",
+        name: "Sangeet",
         themeKey: "masquerade",
-        theme: "Bling • Masquerade Ball",
-        time: "6:00 PM onwards",
-        dressCode: {
-          label: "Bling & Sequins",
-          lines: [
-            { who: "Men", what: "Party-wear suits — please avoid jeans and tennis shoes." },
-            { who: "Women", what: "Shiny cocktail wear or sequinned dresses." },
-          ],
-        },
-        photosUrl: GALLERY_FOLDERS[3].url,
-        venue: {
-          name: "Luxe Event Venue",
-          address: "10213 John Adams Rd, Charlotte, NC 28262",
-          mapsUrl:
-            "https://maps.google.com/maps/place//data=!4m2!3m1!1s0x88541d7fe97a02a5:0x54f177497cd295da?entry=s&sa=X&ved=2ahUKEwiV4qiysf6VAxWyj4kEHTiHF2IQ4kB6BAgEEAA&hl=en",
-        },
-        start: ET(9, 30, 18, 0),
-        end: ET(9, 31, 0, 0),
+        time: "7:00 PM",
+        photosUrl: undefined,
+        venue: VENUE_RUSTIC,
+        start: IST(7, 19, 19, 0),
+        end: IST(7, 19, 23, 0),
       },
     ],
   },
   {
-    date: "31 October",
-    weekday: "Saturday",
+    date: "23 August",
+    weekday: "Sunday",
     events: [
       {
         slug: "pellikoduku",
         name: "Pellikoduku",
         themeKey: "pellikoduku",
-        theme: "Vintage",
-        time: "11:15 AM onwards",
-        photosUrl: GALLERY_FOLDERS[2].url,
-        venue: { name: "To be announced" }, // TODO(venue)
-        start: ET(9, 31, 11, 15),
-        end: ET(9, 31, 14, 0),
+        time: "9:00 AM",
+        photosUrl: undefined,
+        venue: {
+          name: "Plot 53, SBI Colony",
+          address: "Musarambagh, Hyderabad 500036",
+          mapsQuery: "SBI Colony, Musarambagh, Hyderabad 500036",
+        },
+        start: IST(7, 23, 9, 0),
+        end: IST(7, 23, 12, 0),
       },
+    ],
+  },
+  {
+    date: "27 August",
+    weekday: "Thursday",
+    events: [
       {
         slug: "wedding",
         name: "Wedding Ceremony",
         themeKey: "telugu",
-        theme: "Telugu Elegance",
-        time: "Muhurtham: 7:25 PM",
-        photosUrl: GALLERY_FOLDERS[4].url,
+        time: "Muhurtham: 10:05 AM",
+        photosUrl: undefined,
         invitation: {
           lead: "We cordially invite you to the wedding ceremony of",
           parties: [
             {
-              name: "Avyay Yennamaneni",
-              parents: "S/o Smt. Yennamaneni Haritha & Sri. Yennamaneni Srinivas Rao",
+              name: "Rithvick Chitimilla",
+              parents: "S/o Chitimilla Archana & Ramakrishna",
             },
-            {
-              name: "Lasya Rao Joginpally",
-              parents: "D/o Smt. Joginpally Saritha & Sri. Joginpally Rajender Rao",
-            },
+            { name: "Pooja Erolla", parents: "" },
           ],
         },
-        venue: {
-          name: "Sweet Magnolia Estate",
-          address: "10101 Bailey Rd, Cornelius, NC 28031",
-          mapsUrl:
-            "https://maps.google.com/maps/place//data=!4m2!3m1!1s0x8856a90c1f2caa73:0xcc55dd654a58f67d?entry=s&sa=X&ved=2ahUKEwirvNPhsf6VAxX238kDHdhBNe4Q4kB6BAgVEAA&hl=en",
-        },
-        start: ET(9, 31, 19, 25),
-        end: ET(9, 31, 23, 59),
+        venue: VENUE_RUSTIC,
+        start: IST(7, 27, 10, 5),
+        end: IST(7, 27, 14, 0),
       },
     ],
   },
@@ -285,13 +232,7 @@ export const EVENT_DAYS: EventDay[] = [
  * a Maps search resolves to the place page — address, photos, reviews and
  * booking links — and cannot rot the way a copied URL can.
  */
-export const HOTELS: string[] = [
-  "Four Points by Sheraton Charlotte - Lake Norman",
-  "Courtyard by Marriott Charlotte Lake Norman",
-  "Comfort Suites Huntersville near Lake Norman",
-  "Best Western Plus Huntersville Inn",
-  "SpringHill Suites by Marriott Charlotte Huntersville",
-];
+export const HOTELS: string[] = [];
 
 export const hotelHref = (name: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name)}`;
@@ -309,10 +250,10 @@ export const EVENTS: WeddingEvent[] = EVENT_DAYS.flatMap((day) => day.events);
 
 export const FULL_WEDDING_CAL = {
   title: `${COUPLE.bride} & ${COUPLE.groom} — Wedding Celebrations`,
-  description: `Three days of celebrations for the wedding of ${COUPLE.bride} & ${COUPLE.groom}. Muhurtham on October 31 at 7:25 PM.`,
-  location: "Charlotte, North Carolina",
-  startUtc: ET(9, 29, 11, 0).toISOString(),
-  endUtc: ET(9, 31, 23, 0).toISOString(),
+  description: `Celebrations for the wedding of ${COUPLE.bride} & ${COUPLE.groom}. Muhurtham on 27 August at 10:05 AM.`,
+  location: "Hyderabad, Telangana",
+  startUtc: IST(7, 15, 9, 0).toISOString(),
+  endUtc: IST(7, 27, 14, 0).toISOString(),
 };
 
 export type DetailIcon = "bed" | "plane" | "camera" | "pin";
@@ -324,30 +265,13 @@ export const DETAIL_CARDS: {
   title: string;
   icon: DetailIcon;
   body: string;
-  /** Appends the full venue list, with directions, under the copy. */
   venues?: boolean;
-  /** Appends the shared photo folders under the copy. */
   gallery?: boolean;
-  /** Appends the nearby hotels under the copy. */
   hotels?: boolean;
 }[] = [
-  {
-    title: "Accommodation",
-    icon: "bed",
-    body: "These are the places we'd suggest, all close to the celebrations around Lake Norman and Huntersville. Tap any one to see it on Google — address, photos and reviews.",
-    hotels: true,
-  },
-  {
-    title: "Travel",
-    icon: "plane",
-    body: "Charlotte Douglas International (CLT) is the closest airport and the easiest arrival for almost everyone. It's a major hub, so most guests will find a direct flight.\n\nFrom the airport it's roughly half an hour to the venues, traffic depending. Rental cars, Uber and Lyft are all easy to find at CLT, and we'd suggest a car — the venues are a little spread out and not walkable from one another.",
-  },
-  {
-    title: "Gallery",
-    icon: "camera",
-    body: "Every celebration has its own shared folder. Add the photos you take, and look through everyone else's.",
-    gallery: true,
-  },
+  // TODO(content): accommodation, travel and a shared photo folder can each be
+  // added back as a card once there is something true to put in them. The
+  // machinery for all three is still in Microsite.tsx.
   {
     title: "Venues",
     icon: "pin",

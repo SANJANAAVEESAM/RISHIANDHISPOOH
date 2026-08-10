@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { SITE_URL } from "@/components/wedding/data";
+import { COUPLE, SITE_URL } from "@/components/wedding/data";
 import { Envelope } from "@/components/wedding/Envelope";
 import { Microsite } from "@/components/wedding/Microsite";
 
-const TITLE = "Lasya & Avyay — October 29–31, 2026 · Charlotte, NC";
-const DESCRIPTION =
-  "Open our invitation: three days of celebrations, venue details, dress codes and RSVP for the wedding of Lasya & Avyay, October 29–31, 2026 near Charlotte, North Carolina.";
+// Derived from COUPLE so it cannot drift from the rest of the invitation.
+// TODO(content): add the dates and place once they are set — this is what
+// shows in a shared link, so it is worth being specific.
+const TITLE = `${COUPLE.bride} & ${COUPLE.groom}`;
+const DESCRIPTION = `Open our invitation: celebrations, venue details and dress codes for the wedding of ${COUPLE.bride} & ${COUPLE.groom}.`;
 
 export const Route = createFileRoute("/")({
   head: () => ({

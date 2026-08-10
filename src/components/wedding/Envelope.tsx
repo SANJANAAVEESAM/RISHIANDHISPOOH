@@ -65,8 +65,8 @@ export function Envelope({ onOpened }: { onOpened: () => void }) {
         src={backdrop}
         alt=""
         aria-hidden="true"
-        width={653}
-        height={1000}
+        width={800}
+        height={1103}
         className="absolute inset-0 h-full w-full object-cover object-center"
       />
 
@@ -95,14 +95,33 @@ export function Envelope({ onOpened }: { onOpened: () => void }) {
         <img
           src={monogram}
           alt={`${COUPLE.bride} and ${COUPLE.groom}`}
-          width={848}
-          height={942}
-          className="h-auto w-[64%]"
+          width={1248}
+          height={1252}
+          className="h-auto w-[74%]"
           // No pool of light behind it and no contrast filter: the artwork is
           // high enough resolution to hold its own against the frost, and both
           // were only propping up the low-resolution screenshot it replaced.
           style={{ filter: "drop-shadow(0 2px 12px oklch(0.28 0.03 55 / 0.2))" }}
         />
+
+        {/* The names, since this mark carries only initials. Drawn from COUPLE
+            so they follow the rest of the invitation rather than being typed
+            here a second time. */}
+        <p
+          className="font-display tracking-[0.26em] uppercase"
+          style={{
+            color: "oklch(0.32 0.03 55)",
+            fontSize: "clamp(0.8rem, 4vw, 1.05rem)",
+            // The artwork carries roughly 23% empty height below its last
+            // strong stroke — the sprig's faint tips trail into it. Left alone
+            // that reads as a large gap. Pulled up by a share of the container
+            // width so it holds as the screen changes, rather than a fixed
+            // pixel nudge that only looks right on one phone.
+            marginTop: "-11%",
+          }}
+        >
+          {COUPLE.bride} and {COUPLE.groom}
+        </p>
       </div>
 
       {/* CTA */}
