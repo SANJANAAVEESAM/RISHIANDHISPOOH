@@ -167,7 +167,7 @@ function EventsSection() {
           className="text-center font-display leading-none text-foreground"
           style={{ fontSize: "clamp(1.9rem, 8.6vw, 2.4rem)" }}
         >
-          The Wedding Soirée
+          The Celebrations
         </h2>
         <Ornament className="mt-4 mb-10" />
 
