@@ -66,9 +66,15 @@ export function ScrollReveal({
     <div
       ref={ref}
       className="relative z-0"
-      style={{ height: `${140 + lines.length * 30}vh`, marginTop: "-54vh" }}
+      // Both numbers were trimmed to close the gap after the countdown lands.
+      // The frame unpins once the container's foot reaches it — at
+      // height - 92dvh of scrolling — while the tail finishes inking at
+      // tailEnd × (height - 100vh). The difference is scrolling during which
+      // nothing moves, and it shrinks as the container shortens and the frame
+      // grows.
+      style={{ height: `${120 + lines.length * 28}vh`, marginTop: "-54vh" }}
     >
-      <div className="sticky top-0 flex h-[86dvh] flex-col items-center justify-center px-[5%]">
+      <div className="sticky top-0 flex h-[92dvh] flex-col items-center justify-center px-[5%]">
         <p
           className="w-full text-center font-accent-soft"
           style={{

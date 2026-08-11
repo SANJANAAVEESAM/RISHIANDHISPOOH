@@ -145,7 +145,12 @@ function Invitation() {
   if (!event?.invitation) return null;
 
   return (
-    <Section id="invitation">
+    // Its own section rather than the shared one, for the top padding: this
+    // follows the countdown, which is already held on a pinned screen of its
+    // own, so another 4rem of air above it only widened a gap that was too
+    // wide already.
+    <section id="invitation" className="w-full px-5 pt-2 pb-16">
+      <Reveal>
       {/* No panel. This block sits straight on the page — a pale card behind it
           read as another tile, and the invitation is not one of the tiles. The
           gold rule above is all the separation it needs. */}
@@ -183,7 +188,8 @@ function Invitation() {
             in Venues, so repeating them here only slowed the announcement. */}
         <Ornament className="mt-9" />
       </div>
-    </Section>
+      </Reveal>
+    </section>
   );
 }
 

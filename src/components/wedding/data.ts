@@ -192,7 +192,11 @@ export const EVENT_DAYS: EventDay[] = [
         venue: {
           name: "Plot 53, SBI Colony",
           address: "Musarambagh, Hyderabad 500036",
-          mapsQuery: "SBI Colony, Musarambagh, Hyderabad 500036",
+          // A dropped pin at 17.375235, 78.519607, supplied by the family. The
+          // name search resolved to the colony rather than the house, which on
+          // a lane of unnumbered plots is not close enough to be useful.
+          mapsUrl:
+            "https://www.google.com/maps/place/17%C2%B022'30.8%22N+78%C2%B031'10.6%22E/@17.3752346,78.5170326,17z/data=!3m1!4b1!4m4!3m3!8m2!3d17.3752346!4d78.5196075?hl=en&entry=ttu&g_ep=EgoyMDI2MDgwNS4xIKXMDSoASAFQAw%3D%3D",
         },
         start: IST(7, 23, 9, 0),
         end: IST(7, 23, 12, 0),
