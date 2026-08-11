@@ -148,19 +148,13 @@ function Invitation() {
 
   return (
     <Section id="invitation">
-      <div
-        className="relative overflow-hidden rounded-[22px] px-5 py-10 text-center"
-        style={{
-          background: "color-mix(in oklab, var(--ivory) 72%, transparent)",
-          backdropFilter: "blur(3px)",
-          WebkitBackdropFilter: "blur(3px)",
-          border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
-          boxShadow: "0 14px 34px -20px oklch(0.32 0.03 60 / 0.45)",
-        }}
-      >
+      {/* No panel. This block sits straight on the page — a pale card behind it
+          read as another tile, and the invitation is not one of the tiles. The
+          gold rule above is all the separation it needs. */}
+      <div className="relative px-1 pt-4 text-center">
         <span
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-px"
+          className="absolute inset-x-6 top-0 h-px"
           style={{ background: "var(--gradient-gold)" }}
         />
 
@@ -776,8 +770,8 @@ export function Microsite({ live }: { live: boolean }) {
         <Hero live={live} />
 
         <Opening />
-        <Invitation />
         <EventsSection />
+        <Invitation />
         <DetailCards />
         <Faqs />
 
