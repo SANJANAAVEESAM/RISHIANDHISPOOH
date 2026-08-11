@@ -31,7 +31,7 @@ export function Hero({ live }: { live: boolean }) {
           <img
             src={couplePhoto}
             alt={`${COUPLE.bride} and ${COUPLE.groom} walking on a beach at golden hour`}
-            width={487}
+            width={618}
             height={1024}
             className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
           />
