@@ -161,7 +161,9 @@ function Invitation() {
           style={{ background: "var(--gradient-gold)" }}
         />
 
-        <p className="mx-auto max-w-[15rem] font-body text-[0.62rem] leading-[1.9] font-medium tracking-[0.2em] uppercase text-bronze-deep">
+        {/* Wider than 15rem now that it is set larger, so "Wedding ceremony of"
+            still holds a single line under 0.2em of tracking. */}
+        <p className="mx-auto max-w-[18rem] font-body text-[0.8rem] leading-[1.7] font-semibold tracking-[0.2em] uppercase text-bronze-deep">
           {event.invitation.lead}
         </p>
 
@@ -176,7 +178,10 @@ function Invitation() {
               {party.name}
             </p>
             {party.parents && (
-              <p className="mx-auto mt-2 max-w-[15rem] font-body text-[0.78rem] leading-relaxed text-muted-foreground">
+              // Darker than the muted tone the rest of the page's small type
+              // uses. These are the families' names, not supporting detail,
+              // and the muted grey put them a long way behind the couple's.
+              <p className="mx-auto mt-2 max-w-[15rem] font-body text-[0.8rem] leading-relaxed text-foreground/85">
                 {party.parents}
               </p>
             )}
