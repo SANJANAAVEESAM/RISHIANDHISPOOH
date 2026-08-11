@@ -281,7 +281,10 @@ function EventsSection() {
                     {String(i + 1).padStart(2, "0")}
                   </span>
 
-                  <p className="font-body text-[0.56rem] font-medium tracking-[0.22em] uppercase text-bronze-deep">
+                  {/* Tracking eased back as the size went up: 0.22em on a
+                      larger face pushed "Wednesday, 19 August" close to the
+                      tile's inner width. */}
+                  <p className="font-body text-[0.72rem] font-semibold tracking-[0.16em] uppercase text-bronze-deep">
                     {day.weekday}, {day.date}
                   </p>
                   <h3 className="mt-2 font-display text-[1.55rem] leading-tight font-semibold text-ink-strong">
