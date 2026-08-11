@@ -787,7 +787,10 @@ export function Microsite({ live }: { live: boolean }) {
             <p className="mx-auto max-w-[16rem] font-script text-3xl leading-snug text-foreground/90">
               We can't wait to celebrate with you
             </p>
-            <p className="mt-8 font-body text-[0.6rem] tracking-[0.3em] uppercase text-muted-foreground">
+            {/* The sign-off. Bold, and in the full ink rather than the muted
+                tone — at this size, under this much letter-spacing, weight
+                alone against a grey would not have read as emphasis. */}
+            <p className="mt-8 font-body text-[0.68rem] font-bold tracking-[0.3em] uppercase text-ink-strong">
               {COUPLE.bride} & {COUPLE.groom}
             </p>
           </Reveal>
