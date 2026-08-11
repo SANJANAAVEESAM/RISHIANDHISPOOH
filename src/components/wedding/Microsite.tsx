@@ -139,134 +139,125 @@ function Opening() {
  */
 const WASH = 0.45;
 /**
- * The celebrations, hung off a single thread.
+ * The celebrations, on a thread you travel along sideways.
  *
- * Everything is on the page — no tabs, no sheets to open. The events run across
- * two weeks with gaps between them, so a continuous line reads the sequence
- * better than separate cards did: the thread shows they belong to one
- * occasion, while each date stands on its own.
+ * A horizontal run suits this schedule: five celebrations over two weeks read
+ * as a journey rather than a list, and each gets a full screen's attention
+ * instead of competing with the next one down.
  *
- * The wedding's formal invitation sits above its own entry, as the printed card
- * has it.
+ * Scroll-snap does the work — no carousel library, no JavaScript. The track is
+ * a plain overflow-x element, so it responds to a swipe, a trackpad, a shift-
+ * scroll and a keyboard alike, and it degrades to an ordinary scroller if
+ * snapping is unsupported.
  */
 function EventsSection() {
+  const stops = EVENT_DAYS.flatMap((day) => day.events.map((event) => ({ day, event })));
+
   return (
     <section
       id="events"
-      className="w-full px-6 py-16"
+      className="w-full py-16"
       style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 3rem)" }}
     >
       <Reveal>
-        <h2
-          className="text-center font-display leading-none text-foreground"
-          style={{ fontSize: "clamp(1.9rem, 8.6vw, 2.4rem)" }}
+        <div className="px-6 text-center">
+          <p className="font-body text-[0.6rem] font-medium tracking-[0.3em] uppercase text-bronze-deep">
+            The celebrations unfold
+          </p>
+          <h2
+            className="mt-3 font-display leading-none text-foreground"
+            style={{ fontSize: "clamp(1.9rem, 8.6vw, 2.4rem)" }}
+          >
+            What to expect
+          </h2>
+        </div>
+
+        {/* Full-bleed: the track has to run past the page gutter or the last
+            card looks clipped rather than continuing off-screen. */}
+        <div
+          className="no-scrollbar mt-10 overflow-x-auto overflow-y-hidden"
+          style={{ scrollSnapType: "x mandatory" }}
         >
-          The Celebrations
-        </h2>
-        <Ornament className="mt-4 mb-10" />
-
-        <div className="relative pl-9">
-          {/* Inset from the dots so the line runs through their centres. */}
-          <span
-            aria-hidden="true"
-            className="absolute top-2 bottom-2 left-[7px] w-px"
-            style={{ background: "color-mix(in oklab, var(--gold) 55%, transparent)" }}
-          />
-
-          <div className="flex flex-col gap-9">
-            {EVENT_DAYS.flatMap((day) =>
-              day.events.map((event) => {
-                const directions = venueMapsHref(event.venue);
-                return (
-                  <div key={event.slug} className="relative text-left">
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-1.5 -left-9 size-[15px] rounded-full"
-                      style={{ background: "var(--gold)" }}
-                    />
-
-                    {event.invitation && (
-                      <div className="mb-5">
-                        <p className="font-body text-[0.8rem] leading-relaxed text-muted-foreground">
-                          {event.invitation.lead}
-                        </p>
-                        {event.invitation.parties.map((party, i) => (
-                          <div key={party.name}>
-                            {i > 0 && (
-                              <p className="my-1.5 font-display text-base italic text-muted-foreground">
-                                and
-                              </p>
-                            )}
-                            <p className="mt-1.5 font-display text-[1.3rem] leading-tight text-ink-strong">
-                              {party.name}
-                            </p>
-                            {party.parents && (
-                              <p className="mt-0.5 font-body text-[0.74rem] leading-relaxed text-muted-foreground">
-                                {party.parents}
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                        <span
-                          aria-hidden="true"
-                          className="mt-5 block h-px w-12"
-                          style={{ background: "var(--gold)", opacity: 0.55 }}
-                        />
-                      </div>
-                    )}
-
-                    <p className="font-body text-[0.58rem] font-medium tracking-[0.2em] uppercase text-bronze-deep">
-                      {day.weekday}, {day.date} {WEDDING_YEAR} · {event.time}
+          <div className="flex w-max items-stretch gap-4 px-6">
+            {stops.map(({ day, event }, i) => {
+              const directions = venueMapsHref(event.venue);
+              const first = i === 0;
+              const last = i === stops.length - 1;
+              return (
+                <article
+                  key={event.slug}
+                  className="flex w-[16.5rem] shrink-0 flex-col"
+                  style={{ scrollSnapAlign: "center" }}
+                >
+                  <div className="flex min-h-[7.5rem] flex-col justify-end pb-4 text-center">
+                    <p className="font-body text-[0.56rem] font-medium tracking-[0.22em] uppercase text-bronze-deep">
+                      {day.weekday}, {day.date}
                     </p>
-
-                    <h3 className="mt-1.5 font-display text-[1.5rem] leading-tight font-semibold text-ink-strong">
+                    <h3 className="mt-2 font-display text-[1.55rem] leading-tight font-semibold text-ink-strong">
                       {event.name}
                     </h3>
+                    <p className="mt-1 font-display text-[1.05rem] text-muted-foreground">
+                      {event.time}
+                    </p>
+                  </div>
 
-                    <p className="mt-1 font-body text-[0.84rem] text-muted-foreground">
+                  {/* The thread. Each card carries its own segment, half-drawn
+                      at the ends so the line stops at the first and last dot
+                      rather than running off into nothing. */}
+                  <div className="relative h-4">
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-1/2 h-px"
+                      style={{
+                        background: "color-mix(in oklab, var(--gold) 55%, transparent)",
+                        left: first ? "50%" : "-0.5rem",
+                        right: last ? "50%" : "-0.5rem",
+                      }}
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-1/2 left-1/2 size-[11px] rounded-full"
+                      style={{
+                        background: "var(--gold)",
+                        transform: "translate(-50%, -50%)",
+                        boxShadow: "0 0 0 4px var(--background)",
+                      }}
+                    />
+                  </div>
+
+                  <div className="pt-4 text-center">
+                    <p className="font-display text-[1.05rem] leading-tight text-ink-strong">
                       {event.venue.name}
                     </p>
                     {event.venue.address && (
-                      <p className="font-body text-[0.76rem] leading-snug text-muted-foreground/85">
+                      <p className="mt-1 font-body text-[0.74rem] leading-snug text-muted-foreground">
                         {event.venue.address}
                       </p>
                     )}
-
                     {directions && (
                       <a
                         href={directions}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-2 inline-flex items-center gap-1.5 font-body text-[0.6rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
+                        className="mt-2.5 inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
                       >
                         Directions <span aria-hidden="true">↗</span>
                       </a>
                     )}
-
-                    {event.dressCode && (
-                      <div className="mt-5">
-                        <DressCodeArt dressCode={event.dressCode} />
-                      </div>
-                    )}
-
-                    {event.photosUrl && (
-                      <a
-                        href={event.photosUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-4 inline-flex items-center gap-2 rounded-xl border border-[var(--gold)]/45 bg-ivory px-5 py-2.5 font-body text-[0.6rem] font-medium tracking-[0.18em] uppercase text-bronze"
-                      >
-                        Share your photos
-                      </a>
-                    )}
                   </div>
-                );
-              }),
-            )}
+                </article>
+              );
+            })}
           </div>
         </div>
 
-        <div className="mt-10 text-center">
+        {/* Horizontal scrolling is easy to miss on a page that scrolls down. */}
+        <p className="mt-7 px-6 text-center font-body text-[0.6rem] tracking-[0.2em] uppercase text-muted-foreground/70">
+          <span aria-hidden="true">←</span> Swipe through the days{" "}
+          <span aria-hidden="true">→</span>
+        </p>
+
+        <div className="mt-8 px-6 text-center">
           <AddToCalendar compact event={FULL_WEDDING_CAL} />
         </div>
       </Reveal>

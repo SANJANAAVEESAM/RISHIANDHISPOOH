@@ -196,6 +196,15 @@
   pointer-events: none !important;
 }
 
+/* A scrollbar across the timeline would cut through the thread. Firefox takes
+   scrollbar-width; WebKit needs the pseudo-element. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility rule-gold {
   height: 1px;
   background: var(--gradient-gold);
