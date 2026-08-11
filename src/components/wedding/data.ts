@@ -22,9 +22,6 @@ export const WEDDING_DATE = IST(7, 27, 10, 5);
 
 export const WEDDING_DATE_RANGE = `August 15th – 27th, ${WEDDING_YEAR}`;
 
-/** The same span written out, for the invitation, where an en dash reads terse. */
-export const CELEBRATION_SPAN = `August 15th to 27th, ${WEDDING_YEAR}`;
-
 export const WHATSAPP_NUMBER = "18326686089";
 
 /**

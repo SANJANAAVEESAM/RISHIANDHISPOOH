@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import {
-  CELEBRATION_SPAN,
   CONTACTS,
   COUPLE,
   DESIGNER,
@@ -179,14 +178,10 @@ function Invitation() {
           </div>
         ))}
 
-        <Ornament className="mt-9 mb-7" />
-
-        {/* The span of the celebrations, not the single ceremony date. Its
-            time, venue and address were here too, and all three already sit on
-            the wedding's own tile a screen above and in Venues below. */}
-        <p className="font-display text-[1.35rem] leading-tight text-foreground">
-          {CELEBRATION_SPAN}
-        </p>
+        {/* Closes on the flourish. The date, time, venue and address that used
+            to sit under it all appear on the wedding's own tile just below and
+            in Venues, so repeating them here only slowed the announcement. */}
+        <Ornament className="mt-9" />
       </div>
     </Section>
   );
@@ -763,8 +758,8 @@ export function Microsite({ live }: { live: boolean }) {
         <Hero live={live} />
 
         <Opening />
-        <EventsSection />
         <Invitation />
+        <EventsSection />
         <DetailCards />
         <Faqs />
 
