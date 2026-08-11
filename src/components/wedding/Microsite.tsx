@@ -8,6 +8,7 @@ import {
   DETAIL_CARDS,
   type DetailIcon,
   EVENT_DAYS,
+  EVENTS,
   FULL_WEDDING_CAL,
   GALLERY_FOLDERS,
   HOTELS,
@@ -130,6 +131,82 @@ function Opening() {
 }
 
 
+/* ------------------------------- invitation ------------------------------- */
+
+/**
+ * The formal invitation — the announcement itself, before the schedule.
+ *
+ * Kept as its own block rather than folded into the wedding's tile in the
+ * timeline. The parents' lines are the point of it, and they need room to be
+ * set the way a card sets them; squeezed into a 16rem tile alongside four
+ * others they would read as small print.
+ */
+function Invitation() {
+  const event = EVENTS.find((e) => e.invitation);
+  const day = EVENT_DAYS.find((d) => d.events.some((e) => e === event));
+  if (!event?.invitation || !day) return null;
+
+  return (
+    <Section id="invitation">
+      <div
+        className="relative overflow-hidden rounded-[22px] px-5 py-10 text-center"
+        style={{
+          background: "color-mix(in oklab, var(--ivory) 72%, transparent)",
+          backdropFilter: "blur(3px)",
+          WebkitBackdropFilter: "blur(3px)",
+          border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
+          boxShadow: "0 14px 34px -20px oklch(0.32 0.03 60 / 0.45)",
+        }}
+      >
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px"
+          style={{ background: "var(--gradient-gold)" }}
+        />
+
+        <p className="mx-auto max-w-[15rem] font-body text-[0.62rem] leading-[1.9] font-medium tracking-[0.2em] uppercase text-bronze-deep">
+          {event.invitation.lead}
+        </p>
+
+        {event.invitation.parties.map((party, i) => (
+          <div key={party.name} className={i === 0 ? "mt-7" : ""}>
+            {i > 0 && (
+              <p aria-hidden="true" className="my-6 font-script text-3xl text-bronze/70">
+                &amp;
+              </p>
+            )}
+            <p className="font-display text-[1.85rem] leading-tight font-semibold text-ink-strong">
+              {party.name}
+            </p>
+            {party.parents && (
+              <p className="mx-auto mt-2 max-w-[15rem] font-body text-[0.78rem] leading-relaxed text-muted-foreground">
+                {party.parents}
+              </p>
+            )}
+          </div>
+        ))}
+
+        <Ornament className="mt-9 mb-7" />
+
+        <p className="font-display text-[1.3rem] leading-tight text-foreground">
+          {day.weekday}, {day.date} {WEDDING_YEAR}
+        </p>
+        <p className="mt-1.5 font-body text-[0.66rem] font-medium tracking-[0.2em] uppercase text-bronze-deep">
+          {event.time}
+        </p>
+        <p className="mt-5 font-display text-[1.1rem] leading-tight text-ink-strong">
+          {event.venue.name}
+        </p>
+        {event.venue.address && (
+          <p className="mx-auto mt-1 max-w-[15rem] font-body text-[0.76rem] leading-snug text-muted-foreground">
+            {event.venue.address}
+          </p>
+        )}
+      </div>
+    </Section>
+  );
+}
+
 /* ---------------------------------- events ---------------------------------- */
 
 /**
@@ -181,51 +258,53 @@ function EventsSection() {
           <div className="flex w-max items-stretch gap-4 px-6">
             {stops.map(({ day, event }, i) => {
               const directions = venueMapsHref(event.venue);
-              const first = i === 0;
-              const last = i === stops.length - 1;
               return (
                 <article
                   key={event.slug}
-                  className="flex w-[16.5rem] shrink-0 flex-col"
-                  style={{ scrollSnapAlign: "center" }}
+                  className="relative flex w-[16.5rem] shrink-0 flex-col overflow-hidden rounded-[20px] px-5 pt-8 pb-6 text-center"
+                  style={{
+                    scrollSnapAlign: "center",
+                    background: "color-mix(in oklab, var(--ivory) 72%, transparent)",
+                    backdropFilter: "blur(3px)",
+                    WebkitBackdropFilter: "blur(3px)",
+                    border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
+                    boxShadow: "0 12px 30px -18px oklch(0.32 0.03 60 / 0.45)",
+                  }}
                 >
-                  <div className="flex min-h-[7.5rem] flex-col justify-end pb-4 text-center">
-                    <p className="font-body text-[0.56rem] font-medium tracking-[0.22em] uppercase text-bronze-deep">
-                      {day.weekday}, {day.date}
-                    </p>
-                    <h3 className="mt-2 font-display text-[1.55rem] leading-tight font-semibold text-ink-strong">
-                      {event.name}
-                    </h3>
-                    <p className="mt-1 font-display text-[1.05rem] text-muted-foreground">
-                      {event.time}
-                    </p>
-                  </div>
+                  {/* The same gold hairline the detail tiles carry, so the two
+                      grids on this page read as one family. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-x-0 top-0 h-px"
+                    style={{ background: "var(--gradient-gold)" }}
+                  />
+                  {/* Position in the run, since the connecting thread went with
+                      the tiles — without it nothing said these were sequential. */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute top-3 right-4 font-body text-[0.55rem] tracking-[0.16em] text-bronze-deep/55"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
 
-                  {/* The thread. Each card carries its own segment, half-drawn
-                      at the ends so the line stops at the first and last dot
-                      rather than running off into nothing. */}
-                  <div className="relative h-4">
+                  <p className="font-body text-[0.56rem] font-medium tracking-[0.22em] uppercase text-bronze-deep">
+                    {day.weekday}, {day.date}
+                  </p>
+                  <h3 className="mt-2 font-display text-[1.55rem] leading-tight font-semibold text-ink-strong">
+                    {event.name}
+                  </h3>
+                  <p className="mt-1 font-display text-[1.05rem] text-muted-foreground">
+                    {event.time}
+                  </p>
+
+                  {/* Pushes the venue to the tile's foot, so a two-line address
+                      on one card does not leave the others short. */}
+                  <div className="mt-auto pt-6">
                     <span
                       aria-hidden="true"
-                      className="absolute top-1/2 h-px"
-                      style={{
-                        background: "color-mix(in oklab, var(--gold) 55%, transparent)",
-                        left: first ? "50%" : "-0.5rem",
-                        right: last ? "50%" : "-0.5rem",
-                      }}
+                      className="mx-auto mb-5 block h-px w-10"
+                      style={{ background: "color-mix(in oklab, var(--gold) 55%, transparent)" }}
                     />
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-1/2 left-1/2 size-[11px] rounded-full"
-                      style={{
-                        background: "var(--gold)",
-                        transform: "translate(-50%, -50%)",
-                        boxShadow: "0 0 0 4px var(--background)",
-                      }}
-                    />
-                  </div>
-
-                  <div className="pt-4 text-center">
                     <p className="font-display text-[1.05rem] leading-tight text-ink-strong">
                       {event.venue.name}
                     </p>
@@ -239,7 +318,7 @@ function EventsSection() {
                         href={directions}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-2.5 inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
+                        className="mt-3 inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
                       >
                         Directions <span aria-hidden="true">↗</span>
                       </a>
@@ -256,10 +335,6 @@ function EventsSection() {
           <span aria-hidden="true">←</span> Swipe through the days{" "}
           <span aria-hidden="true">→</span>
         </p>
-
-        <div className="mt-8 px-6 text-center">
-          <AddToCalendar compact event={FULL_WEDDING_CAL} />
-        </div>
       </Reveal>
     </section>
   );
@@ -304,6 +379,14 @@ const DETAIL_ICONS: Record<DetailIcon, ReactNode> = {
       <circle cx="24" cy="14" r="4.1" />
     </g>
   ),
+  calendar: (
+    <g {...iconStroke}>
+      <rect x="12" y="7" width="24" height="23" rx="3.5" />
+      <path d="M12 14.5h24M18.5 4v6M29.5 4v6" />
+      {/* Round caps turn these zero-length strokes into the date dots. */}
+      <path d="M18.5 20h.01M24 20h.01M29.5 20h.01M18.5 25h.01M24 25h.01" strokeWidth="2" />
+    </g>
+  ),
 };
 
 function DetailIconArt({ icon, className = "h-10 w-auto" }: { icon: DetailIcon; className?: string }) {
@@ -311,6 +394,43 @@ function DetailIconArt({ icon, className = "h-10 w-auto" }: { icon: DetailIcon; 
     <svg viewBox="0 0 48 34" className={className} aria-hidden="true">
       {DETAIL_ICONS[icon]}
     </svg>
+  );
+}
+
+/** The shared look of a details tile — a rectangle, icon in a soft gold disc. */
+const TILE_CLASS =
+  "relative flex w-full flex-col items-center justify-center gap-2.5 rounded-2xl px-4 py-7 text-center transition-transform active:scale-[0.99]";
+const TILE_STYLE = {
+  background: "color-mix(in oklab, var(--ivory) 68%, transparent)",
+  backdropFilter: "blur(3px)",
+  WebkitBackdropFilter: "blur(3px)",
+  border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
+  boxShadow: "0 10px 26px -16px oklch(0.32 0.03 60 / 0.4)",
+} as const;
+
+function TileFace({ card }: { card: (typeof DETAIL_CARDS)[number] }) {
+  return (
+    <>
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-px"
+        style={{ background: "var(--gradient-gold)" }}
+      />
+      {/* The disc is what makes these read as actions rather than headings. */}
+      <span
+        aria-hidden="true"
+        className="flex size-14 items-center justify-center rounded-full"
+        style={{ background: "color-mix(in oklab, var(--gold) 15%, transparent)" }}
+      >
+        <DetailIconArt icon={card.icon} className="h-7 w-auto" />
+      </span>
+      <span className="block font-display text-[1.3rem] leading-tight text-foreground">
+        {card.title}
+      </span>
+      <span className="block font-body text-[0.76rem] leading-snug text-muted-foreground">
+        {card.hint}
+      </span>
+    </>
   );
 }
 
@@ -329,41 +449,40 @@ function DetailCards() {
       </h2>
       <Ornament className="mt-4 mb-8" />
 
-      {/* Two columns only when there is more than one card. A lone tile in a
-          two-column grid sits at half width against nothing, which reads as a
-          mistake; on its own it spans the full width as a rectangle. */}
-      <div className={`grid gap-3.5 ${DETAIL_CARDS.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
-        {DETAIL_CARDS.map((card, i) => (
-          <button
-            key={card.title}
-            type="button"
-            onClick={() => setOpenIdx(i)}
-            className="relative flex flex-col items-center justify-center gap-3 rounded-2xl px-4 py-7 text-center transition-transform active:scale-[0.99]"
-            style={{
-              background: "color-mix(in oklab, var(--ivory) 68%, transparent)",
-              backdropFilter: "blur(3px)",
-              WebkitBackdropFilter: "blur(3px)",
-              border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
-              boxShadow: "0 10px 26px -16px oklch(0.32 0.03 60 / 0.4)",
-            }}
-          >
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-0 top-0 h-px"
-              style={{ background: "var(--gradient-gold)" }}
-            />
-            <DetailIconArt icon={card.icon} />
-            <span className="block font-display text-[1.25rem] leading-tight lowercase first-letter:uppercase text-foreground">
-              {card.title}
-            </span>
-            <span
-              aria-hidden="true"
-              className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-full bg-bronze/12 text-[0.85rem] text-bronze"
+      {/* Stacked rectangles rather than a two-up grid: both tiles carry a line
+          of explanation under the title, which a half-width tile wraps into
+          three lines on a phone. */}
+      <div className="grid grid-cols-1 gap-3.5">
+        {DETAIL_CARDS.map((card, i) =>
+          // Save the Date has nothing to read — it is the calendar chooser
+          // itself, wearing the same tile as its neighbour.
+          card.calendar ? (
+            <AddToCalendar
+              key={card.title}
+              event={FULL_WEDDING_CAL}
+              className={TILE_CLASS}
+              style={TILE_STYLE}
             >
-              +
-            </span>
-          </button>
-        ))}
+              <TileFace card={card} />
+            </AddToCalendar>
+          ) : (
+            <button
+              key={card.title}
+              type="button"
+              onClick={() => setOpenIdx(i)}
+              className={TILE_CLASS}
+              style={TILE_STYLE}
+            >
+              <TileFace card={card} />
+              <span
+                aria-hidden="true"
+                className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-full bg-bronze/12 text-[0.85rem] text-bronze"
+              >
+                +
+              </span>
+            </button>
+          ),
+        )}
       </div>
       </Section>
 
@@ -657,6 +776,7 @@ export function Microsite({ live }: { live: boolean }) {
         <Hero live={live} />
 
         <Opening />
+        <Invitation />
         <EventsSection />
         <DetailCards />
         <Faqs />

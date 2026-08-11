@@ -47,7 +47,7 @@ export const CONTACTS: {
   display: string;
   whatsapp?: string;
 }[] = [
-  { name: COUPLE.bride, tel: "+919014545488", display: "+91 90145 45488" },
+  { name: COUPLE.bride, tel: "+916301560814", display: "+91 63015 60814" },
   { name: COUPLE.groom, tel: "+918500603422", display: "+91 85006 03422" },
 ];
 
@@ -214,9 +214,12 @@ export const EVENT_DAYS: EventDay[] = [
           parties: [
             {
               name: "Rithvick Chitimilla",
-              parents: "S/o Chitimilla Archana & Ramakrishna",
+              parents: "Eldest S/o Chitimilla Archana & Chitimilla Ramakrishna",
             },
-            { name: "Pooja Erolla", parents: "" },
+            {
+              name: "Pooja Erolla",
+              parents: "Eldest D/o Late Erolla Anitha & Late Erolla Ravikanth",
+            },
           ],
         },
         venue: VENUE_RUSTIC,
@@ -256,7 +259,7 @@ export const FULL_WEDDING_CAL = {
   endUtc: IST(7, 27, 14, 0).toISOString(),
 };
 
-export type DetailIcon = "bed" | "plane" | "camera" | "pin";
+export type DetailIcon = "bed" | "plane" | "camera" | "pin" | "calendar";
 
 // TODO(content): hotel names, rates, booking codes and shuttle timings still
 // need to be filled in by the couple — the copy below says so plainly rather
@@ -264,17 +267,29 @@ export type DetailIcon = "bed" | "plane" | "camera" | "pin";
 export const DETAIL_CARDS: {
   title: string;
   icon: DetailIcon;
+  /** The line under the title on the tile itself. */
+  hint: string;
   body: string;
   venues?: boolean;
   gallery?: boolean;
   hotels?: boolean;
+  /** Opens the calendar chooser instead of a details sheet. */
+  calendar?: boolean;
 }[] = [
   // TODO(content): accommodation, travel and a shared photo folder can each be
   // added back as a card once there is something true to put in them. The
   // machinery for all three is still in Microsite.tsx.
   {
+    title: "Save the Date",
+    icon: "calendar",
+    hint: "Add to calendar",
+    body: "",
+    calendar: true,
+  },
+  {
     title: "Venues",
     icon: "pin",
+    hint: "Directions to every celebration",
     body: "Where each celebration is held. Tap any address for directions.",
     venues: true,
   },

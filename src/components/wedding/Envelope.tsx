@@ -108,10 +108,15 @@ export function Envelope({ onOpened }: { onOpened: () => void }) {
             so they follow the rest of the invitation rather than being typed
             here a second time. */}
         <p
-          className="font-display tracking-[0.26em] uppercase"
+          className="font-display font-semibold tracking-[0.24em] uppercase"
           style={{
-            color: "oklch(0.32 0.03 55)",
-            fontSize: "clamp(0.8rem, 4vw, 1.05rem)",
+            // Darker, larger and with a little weight. At the old size and
+            // tone the names all but disappeared into the frost, which is a
+            // blurred photograph rather than a flat panel — there is no fixed
+            // contrast to rely on, so the type has to carry it.
+            color: "oklch(0.22 0.035 55)",
+            fontSize: "clamp(0.98rem, 4.9vw, 1.3rem)",
+            textShadow: "0 1px 10px oklch(0.98 0.01 80 / 0.8)",
             // The artwork carries roughly 23% empty height below its last
             // strong stroke — the sprig's faint tips trail into it. Left alone
             // that reads as a large gap. Pulled up by a share of the container

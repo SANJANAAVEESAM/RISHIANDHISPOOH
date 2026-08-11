@@ -1,3 +1,5 @@
+import type { CSSProperties, ReactNode } from "react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,26 +8,44 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { downloadIcs, googleCalendarUrl, type CalendarEvent } from "@/lib/calendar";
 
+/**
+ * Google or .ics, behind one trigger.
+ *
+ * `children` replaces the default pill so the chooser can be worn by anything —
+ * the "Save the Date" tile in the details grid is the same button underneath.
+ */
 export function AddToCalendar({
   event,
   compact = false,
+  children,
+  className,
+  style,
 }: {
   event: CalendarEvent;
   compact?: boolean;
+  children?: ReactNode;
+  className?: string;
+  style?: CSSProperties;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className={
-            compact
-              ? "inline-flex items-center gap-2 rounded-lg border border-[var(--silver)]/60 bg-ivory px-4 py-2 font-body text-[0.6rem] font-medium tracking-[0.2em] uppercase text-foreground/80 shadow-sm transition-all hover:shadow-md active:scale-[0.98]"
-              : "inline-flex items-center gap-2 rounded-xl border border-[var(--silver)]/60 bg-ivory px-7 py-3.5 font-body text-[0.66rem] font-medium tracking-[0.24em] uppercase text-foreground/85 shadow-[0_10px_28px_-14px_oklch(0.28_0.02_60/0.45)] transition-all hover:shadow-[0_14px_34px_-14px_oklch(0.28_0.02_60/0.55)] active:scale-[0.98]"
-          }
-        >
-          Add to Calendar
-        </button>
+        {children ? (
+          <button type="button" className={className} style={style}>
+            {children}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className={
+              compact
+                ? "inline-flex items-center gap-2 rounded-lg border border-[var(--silver)]/60 bg-ivory px-4 py-2 font-body text-[0.6rem] font-medium tracking-[0.2em] uppercase text-foreground/80 shadow-sm transition-all hover:shadow-md active:scale-[0.98]"
+                : "inline-flex items-center gap-2 rounded-xl border border-[var(--silver)]/60 bg-ivory px-7 py-3.5 font-body text-[0.66rem] font-medium tracking-[0.24em] uppercase text-foreground/85 shadow-[0_10px_28px_-14px_oklch(0.28_0.02_60/0.45)] transition-all hover:shadow-[0_14px_34px_-14px_oklch(0.28_0.02_60/0.55)] active:scale-[0.98]"
+            }
+          >
+            Add to Calendar
+          </button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="center" className="border-[var(--silver)]/50 bg-pearl font-body">
         <DropdownMenuItem
