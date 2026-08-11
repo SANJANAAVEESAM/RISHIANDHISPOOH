@@ -107,7 +107,10 @@ function Opening() {
       {celebrate && <Confetti />}
 
       <ScrollReveal
-        lines={["Our forever", "starts", "here", "We’d love for you to be there"]}
+        // Two lines, not four. Each inks on its own scroll ramp, so splitting a
+        // short phrase across three of them stretched it out and left the eye
+        // waiting between words.
+        lines={["Our forever starts here", "We’d love for you to be there"]}
         onTail={() => {
           if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) setCelebrate(true);
         }}
