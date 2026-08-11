@@ -18,31 +18,46 @@ export function Hero({ live }: { live: boolean }) {
       {/* Sits above the next section, which is pulled up underneath it — the
           card stays opaque until it has collapsed out of the way. */}
       <div
-        className="sticky top-0 z-10 h-[100dvh] p-3"
+        className="sticky top-0 z-10 flex h-[100dvh] items-center p-3"
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 0.75rem)" }}
       >
         <div
           className="relative w-full overflow-hidden rounded-[24px]"
           style={{
-            height: `${(100 - progress * COLLAPSE).toFixed(2)}%`,
+            // Not the full screen. A full-height card is an aspect of about
+            // 0.48, and the drawing is 0.75 — filling that would have meant
+            // throwing away a third of it or standing the couple in a well of
+            // empty cream. At 78% the frame is close to the artwork's own.
+            height: `${(78 - progress * COLLAPSE).toFixed(2)}%`,
             boxShadow: "var(--shadow-paper)",
+            // The card's own field, and the same cream the drawing was
+            // multiplied onto, so the artwork has no edge of its own.
+            background: "var(--background)",
           }}
         >
+          {/* Contained, not covering. This is a drawing, not a photograph:
+              cropping it to fill would cut an arm or a foot on some phones,
+              and against flat ground the space left over is invisible.
+              Anchored to the top, with the foot of the box kept for the names.
+              No slow zoom either — on flat line art it reads as a wobble. */}
           <img
             src={couplePhoto}
-            alt={`${COUPLE.bride} and ${COUPLE.groom} walking on a beach at golden hour`}
-            width={618}
-            height={1024}
-            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
+            alt={`An illustration of ${COUPLE.bride} and ${COUPLE.groom}`}
+            width={820}
+            height={1090}
+            className="absolute inset-0 h-full w-full object-contain object-top"
+            style={{ padding: "2% 3% 21%" }}
           />
 
-          {/* Just enough shading under the type to keep white legible on sand */}
+          {/* Cream, not shade. The names below are ink on a pale field now, so
+              the dark scrim that used to sit here would be a bruise across the
+              foot of a white drawing. This only lifts the figures clear. */}
           <div
             aria-hidden="true"
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, transparent 44%, oklch(0.28 0.03 60 / 0.18) 66%, oklch(0.22 0.03 60 / 0.5) 100%)",
+                "linear-gradient(180deg, transparent 52%, oklch(0.965 0.012 80 / 0.88) 78%, oklch(0.965 0.012 80) 100%)",
             }}
           />
 
@@ -54,28 +69,30 @@ export function Hero({ live }: { live: boolean }) {
               transition: live ? "opacity 1100ms ease 250ms" : undefined,
             }}
           >
+            {/* Ink, not white. The field under it is cream now — white type
+                would simply be gone, and the shadow that used to carry it over
+                sand has nothing to do here. */}
             <h1
-              className="text-center font-display leading-[1.08] text-white italic"
+              className="text-center font-display leading-[1.08] text-ink-strong italic"
               style={{
                 fontSize: "clamp(2.5rem, 12vw, 3.5rem)",
                 // Explicit: the h1 rule's 600 has no italic cut here and would fake-bold.
                 fontWeight: 400,
-                textShadow: "0 2px 18px oklch(0.24 0.03 60 / 0.4)",
               }}
             >
               {COUPLE.bride} &amp; {COUPLE.groom}
             </h1>
 
-            <div className="mt-7 h-px w-full bg-white/45" />
+            <div className="mt-7 h-px w-full bg-foreground/25" />
 
             <div className="mt-5 flex items-center justify-between">
               <span
                 aria-hidden="true"
-                className="animate-scroll-nudge font-body text-sm text-white/60"
+                className="animate-scroll-nudge font-body text-sm text-foreground/50"
               >
                 ↓
               </span>
-              <span className="font-body text-[0.62rem] font-light tracking-[0.34em] text-white/65 uppercase">
+              <span className="font-body text-[0.62rem] font-light tracking-[0.34em] text-foreground/60 uppercase">
                 Scroll to Explore
               </span>
             </div>
