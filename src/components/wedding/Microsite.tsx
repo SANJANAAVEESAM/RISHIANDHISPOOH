@@ -28,7 +28,6 @@ import { MusicToggle } from "./MusicToggle";
 import { Ornament } from "./Ornament";
 import { Reveal } from "./Reveal";
 import { ScrollReveal } from "./ScrollReveal";
-import { EVENT_THEMES } from "./eventThemes";
 
 /* ---------------------------------- shell ---------------------------------- */
 
@@ -139,21 +138,16 @@ function Opening() {
  * the values tuned against the artwork keep their relationship to one another.
  */
 const WASH = 0.45;
-
 /**
- * The schedule, one day at a time. Tabs keep it to a single screen while still
- * giving each event room, and every card opens a sheet with the full details.
- */
-/**
- * The celebrations, laid out in full on the page.
+ * The celebrations, hung off a single thread.
  *
- * No tabs and no sheets to open: every event shows its date, time and venue
- * where it stands. Tapping through to a detail view suited a three-day schedule
- * with dress codes and photo folders behind each card; here there is less to
- * say per event, and hiding it behind a tap only added a step.
+ * Everything is on the page — no tabs, no sheets to open. The events run across
+ * two weeks with gaps between them, so a continuous line reads the sequence
+ * better than separate cards did: the thread shows they belong to one
+ * occasion, while each date stands on its own.
  *
- * Each event keeps its own artwork as a wash, so the run still reads as a
- * sequence of distinct celebrations rather than a list.
+ * The wedding's formal invitation sits above its own entry, as the printed card
+ * has it.
  */
 function EventsSection() {
   return (
@@ -171,145 +165,108 @@ function EventsSection() {
         </h2>
         <Ornament className="mt-4 mb-10" />
 
-        <div className="flex flex-col gap-8">
-          {EVENT_DAYS.map((day) => (
-            <div key={day.date} className="flex flex-col gap-4">
-              <p className="text-center font-body text-[0.6rem] font-medium tracking-[0.24em] uppercase text-bronze-deep">
-                {day.weekday}, {day.date} {WEDDING_YEAR}
-              </p>
+        <div className="relative pl-9">
+          {/* Inset from the dots so the line runs through their centres. */}
+          <span
+            aria-hidden="true"
+            className="absolute top-2 bottom-2 left-[7px] w-px"
+            style={{ background: "color-mix(in oklab, var(--gold) 55%, transparent)" }}
+          />
 
-              {day.events.map((event) => {
-                const look = EVENT_THEMES[event.themeKey];
+          <div className="flex flex-col gap-9">
+            {EVENT_DAYS.flatMap((day) =>
+              day.events.map((event) => {
                 const directions = venueMapsHref(event.venue);
                 return (
-                  <article
-                    key={event.slug}
-                    className="relative overflow-hidden rounded-2xl px-6 py-7 text-center"
-                    style={{
-                      background: "color-mix(in oklab, var(--ivory) 94%, transparent)",
-                      backdropFilter: "blur(3px)",
-                      WebkitBackdropFilter: "blur(3px)",
-                      border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
-                      boxShadow: "0 10px 26px -16px oklch(0.32 0.03 60 / 0.4)",
-                    }}
-                  >
+                  <div key={event.slug} className="relative text-left">
                     <span
                       aria-hidden="true"
-                      className="absolute inset-x-0 top-0 h-px"
-                      style={{ background: "var(--gradient-gold)" }}
+                      className="absolute top-1.5 -left-9 size-[15px] rounded-full"
+                      style={{ background: "var(--gold)" }}
                     />
 
-                    {look.image && (
-                      <img
-                        src={look.image}
-                        alt=""
-                        aria-hidden="true"
-                        loading="lazy"
-                        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-                        style={{
-                          opacity: (look.cardOpacity ?? 0.2) * WASH,
-                          objectPosition: look.cardPosition ?? "center bottom",
-                        }}
-                      />
+                    {event.invitation && (
+                      <div className="mb-5">
+                        <p className="font-body text-[0.8rem] leading-relaxed text-muted-foreground">
+                          {event.invitation.lead}
+                        </p>
+                        {event.invitation.parties.map((party, i) => (
+                          <div key={party.name}>
+                            {i > 0 && (
+                              <p className="my-1.5 font-display text-base italic text-muted-foreground">
+                                and
+                              </p>
+                            )}
+                            <p className="mt-1.5 font-display text-[1.3rem] leading-tight text-ink-strong">
+                              {party.name}
+                            </p>
+                            {party.parents && (
+                              <p className="mt-0.5 font-body text-[0.74rem] leading-relaxed text-muted-foreground">
+                                {party.parents}
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                        <span
+                          aria-hidden="true"
+                          className="mt-5 block h-px w-12"
+                          style={{ background: "var(--gold)", opacity: 0.55 }}
+                        />
+                      </div>
                     )}
 
-                    <div className="relative">
-                      {/* The wedding carries the formal invitation above its
-                          details, as the printed card does. */}
-                      {event.invitation && (
-                        <div className="mb-6">
-                          <p className="mx-auto max-w-[19rem] font-body text-[0.8rem] leading-relaxed text-muted-foreground">
-                            {event.invitation.lead}
-                          </p>
-                          {event.invitation.parties.map((party, i) => (
-                            <div key={party.name}>
-                              {i > 0 && (
-                                <p className="my-2 font-display text-base italic text-muted-foreground">
-                                  and
-                                </p>
-                              )}
-                              <p className="mt-2 font-display text-[1.3rem] leading-tight text-ink-strong">
-                                {party.name}
-                              </p>
-                              {party.parents && (
-                                <p className="mx-auto mt-1 max-w-[19rem] font-body text-[0.75rem] leading-relaxed text-muted-foreground">
-                                  {party.parents}
-                                </p>
-                              )}
-                            </div>
-                          ))}
-                          <span
-                            aria-hidden="true"
-                            className="mx-auto mt-6 block h-px w-14"
-                            style={{ background: look.accent, opacity: 0.5 }}
-                          />
-                        </div>
-                      )}
+                    <p className="font-body text-[0.58rem] font-medium tracking-[0.2em] uppercase text-bronze-deep">
+                      {day.weekday}, {day.date} {WEDDING_YEAR} · {event.time}
+                    </p>
 
-                      <h3 className="font-display text-[1.6rem] leading-tight font-bold text-ink-strong">
-                        {event.name}
-                      </h3>
-                      {event.theme && (
-                        <p className="mt-1 font-script text-lg text-bronze-deep">{event.theme}</p>
-                      )}
+                    <h3 className="mt-1.5 font-display text-[1.5rem] leading-tight font-semibold text-ink-strong">
+                      {event.name}
+                    </h3>
 
-                      <p className="mt-2 font-display text-xl text-ink-strong">{event.time}</p>
-
-                      <span
-                        aria-hidden="true"
-                        className="rule-gold mx-auto mt-4 mb-4 block w-16"
-                      />
-
-                      <p className="font-display text-[1.15rem] leading-tight text-ink-strong">
-                        {event.venue.name}
+                    <p className="mt-1 font-body text-[0.84rem] text-muted-foreground">
+                      {event.venue.name}
+                    </p>
+                    {event.venue.address && (
+                      <p className="font-body text-[0.76rem] leading-snug text-muted-foreground/85">
+                        {event.venue.address}
                       </p>
-                      {event.venue.address && (
-                        <p className="mx-auto mt-1 max-w-[18rem] font-body text-[0.78rem] leading-snug text-muted-foreground">
-                          {event.venue.address}
-                        </p>
-                      )}
+                    )}
 
-                      {directions && (
-                        <a
-                          href={directions}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mt-3 inline-flex items-center gap-1.5 font-body text-[0.62rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
-                        >
-                          Directions <span aria-hidden="true">↗</span>
-                        </a>
-                      )}
+                    {directions && (
+                      <a
+                        href={directions}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-2 inline-flex items-center gap-1.5 font-body text-[0.6rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
+                      >
+                        Directions <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
 
-                      {event.dressCode && (
-                        <div className="mt-6">
-                          <DressCodeArt
-                            dressCode={event.dressCode}
-                            ink={look.ink}
-                            inkSoft={look.inkSoft}
-                            accent={look.accent}
-                          />
-                        </div>
-                      )}
+                    {event.dressCode && (
+                      <div className="mt-5">
+                        <DressCodeArt dressCode={event.dressCode} />
+                      </div>
+                    )}
 
-                      {event.photosUrl && (
-                        <a
-                          href={event.photosUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mt-6 inline-flex items-center gap-2 rounded-xl border border-[var(--gold)]/45 bg-ivory px-6 py-3 font-body text-[0.62rem] font-medium tracking-[0.2em] uppercase text-bronze"
-                        >
-                          Share your photos
-                        </a>
-                      )}
-                    </div>
-                  </article>
+                    {event.photosUrl && (
+                      <a
+                        href={event.photosUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 inline-flex items-center gap-2 rounded-xl border border-[var(--gold)]/45 bg-ivory px-5 py-2.5 font-body text-[0.6rem] font-medium tracking-[0.18em] uppercase text-bronze"
+                      >
+                        Share your photos
+                      </a>
+                    )}
+                  </div>
                 );
-              })}
-            </div>
-          ))}
+              }),
+            )}
+          </div>
         </div>
 
-        <div className="mt-9 text-center">
+        <div className="mt-10 text-center">
           <AddToCalendar compact event={FULL_WEDDING_CAL} />
         </div>
       </Reveal>
