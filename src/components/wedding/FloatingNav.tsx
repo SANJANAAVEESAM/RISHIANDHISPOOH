@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { COUPLE } from "./data";
+import navMark from "@/assets/monogram-mark.png";
 
 const MENU_LINKS = [
   { href: "#home", label: "Home" },
@@ -52,9 +53,22 @@ export function FloatingNav({ visible }: { visible: boolean }) {
           type="button"
           onClick={() => go("#home")}
           aria-label="Back to top"
-          className="font-display text-xl leading-none text-foreground"
+          className="flex items-center leading-none"
         >
-          {COUPLE.bride[0]}&amp;{COUPLE.groom[0]}
+          {/* The couple's mark rather than their initials set in type. This is
+              a crop of the monogram on the envelope down to the interlocked
+              letters — the sprigs that frame it there turn to noise at 36px. */}
+          <img
+            src={navMark}
+            alt={`${COUPLE.bride} and ${COUPLE.groom}`}
+            width={197}
+            height={240}
+            className="h-9 w-auto"
+            // The mark is a pale foil gold that all but vanished against the
+            // glass, next to a near-black menu icon. Darkened rather than
+            // recoloured flat, so the foil's shading survives.
+            style={{ filter: "brightness(0.5) saturate(1.6) contrast(1.25)" }}
+          />
         </button>
 
         <div className="flex items-center gap-1.5">

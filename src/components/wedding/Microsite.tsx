@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import {
+  CELEBRATION_SPAN,
   CONTACTS,
   COUPLE,
   DESIGNER,
@@ -14,7 +15,6 @@ import {
   HOTELS,
   hotelHref,
   WEDDING_DATE_RANGE,
-  WEDDING_YEAR,
   venueMapsHref,
   type WeddingEvent,
 } from "./data";
@@ -143,8 +143,7 @@ function Opening() {
  */
 function Invitation() {
   const event = EVENTS.find((e) => e.invitation);
-  const day = EVENT_DAYS.find((d) => d.events.some((e) => e === event));
-  if (!event?.invitation || !day) return null;
+  if (!event?.invitation) return null;
 
   return (
     <Section id="invitation">
@@ -182,20 +181,12 @@ function Invitation() {
 
         <Ornament className="mt-9 mb-7" />
 
-        <p className="font-display text-[1.3rem] leading-tight text-foreground">
-          {day.weekday}, {day.date} {WEDDING_YEAR}
+        {/* The span of the celebrations, not the single ceremony date. Its
+            time, venue and address were here too, and all three already sit on
+            the wedding's own tile a screen above and in Venues below. */}
+        <p className="font-display text-[1.35rem] leading-tight text-foreground">
+          {CELEBRATION_SPAN}
         </p>
-        <p className="mt-1.5 font-body text-[0.66rem] font-medium tracking-[0.2em] uppercase text-bronze-deep">
-          {event.time}
-        </p>
-        <p className="mt-5 font-display text-[1.1rem] leading-tight text-ink-strong">
-          {event.venue.name}
-        </p>
-        {event.venue.address && (
-          <p className="mx-auto mt-1 max-w-[15rem] font-body text-[0.76rem] leading-snug text-muted-foreground">
-            {event.venue.address}
-          </p>
-        )}
       </div>
     </Section>
   );
@@ -396,7 +387,7 @@ function DetailIconArt({ icon, className = "h-10 w-auto" }: { icon: DetailIcon; 
 
 /** The shared look of a details tile — a rectangle, icon in a soft gold disc. */
 const TILE_CLASS =
-  "relative flex w-full flex-col items-center justify-center gap-2.5 rounded-2xl px-4 py-7 text-center transition-transform active:scale-[0.99]";
+  "relative flex w-full flex-col items-center justify-center gap-2 rounded-2xl px-3 py-6 text-center transition-transform active:scale-[0.99]";
 const TILE_STYLE = {
   background: "color-mix(in oklab, var(--ivory) 68%, transparent)",
   backdropFilter: "blur(3px)",
@@ -416,15 +407,15 @@ function TileFace({ card }: { card: (typeof DETAIL_CARDS)[number] }) {
       {/* The disc is what makes these read as actions rather than headings. */}
       <span
         aria-hidden="true"
-        className="flex size-14 items-center justify-center rounded-full"
+        className="flex size-12 items-center justify-center rounded-full"
         style={{ background: "color-mix(in oklab, var(--gold) 15%, transparent)" }}
       >
-        <DetailIconArt icon={card.icon} className="h-7 w-auto" />
+        <DetailIconArt icon={card.icon} className="h-6 w-auto" />
       </span>
-      <span className="block font-display text-[1.3rem] leading-tight text-foreground">
+      <span className="block font-display text-[1.18rem] leading-tight text-foreground">
         {card.title}
       </span>
-      <span className="block font-body text-[0.76rem] leading-snug text-muted-foreground">
+      <span className="block font-body text-[0.7rem] leading-snug text-muted-foreground">
         {card.hint}
       </span>
     </>
@@ -446,10 +437,9 @@ function DetailCards() {
       </h2>
       <Ornament className="mt-4 mb-8" />
 
-      {/* Stacked rectangles rather than a two-up grid: both tiles carry a line
-          of explanation under the title, which a half-width tile wraps into
-          three lines on a phone. */}
-      <div className="grid grid-cols-1 gap-3.5">
+      {/* Two up. The hints were shortened to suit — at half width "Directions
+          to every celebration" ran to three lines under the title. */}
+      <div className="grid grid-cols-2 gap-3.5">
         {DETAIL_CARDS.map((card, i) =>
           // Save the Date has nothing to read — it is the calendar chooser
           // itself, wearing the same tile as its neighbour.
@@ -473,7 +463,7 @@ function DetailCards() {
               <TileFace card={card} />
               <span
                 aria-hidden="true"
-                className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-full bg-bronze/12 text-[0.85rem] text-bronze"
+                className="absolute top-2.5 right-2.5 flex size-6 items-center justify-center rounded-full bg-bronze/12 text-[0.75rem] text-bronze"
               >
                 +
               </span>

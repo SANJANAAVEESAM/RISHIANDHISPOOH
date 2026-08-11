@@ -20,7 +20,10 @@ const IST = (month: number, day: number, hour: number, minute: number) =>
 /** Muhurtham — 27 August, 10:05 AM IST. */
 export const WEDDING_DATE = IST(7, 27, 10, 5);
 
-export const WEDDING_DATE_RANGE = `August 15–27, ${WEDDING_YEAR}`;
+export const WEDDING_DATE_RANGE = `August 15th – 27th, ${WEDDING_YEAR}`;
+
+/** The same span written out, for the invitation, where an en dash reads terse. */
+export const CELEBRATION_SPAN = `August 15th to 27th, ${WEDDING_YEAR}`;
 
 export const WHATSAPP_NUMBER = "18326686089";
 
@@ -210,7 +213,7 @@ export const EVENT_DAYS: EventDay[] = [
         time: "Muhurtham: 10:05 AM",
         photosUrl: undefined,
         invitation: {
-          lead: "We cordially invite you to the wedding ceremony of",
+          lead: "Wedding ceremony of",
           parties: [
             {
               name: "Rithvick Chitimilla",
@@ -289,7 +292,7 @@ export const DETAIL_CARDS: {
   {
     title: "Venues",
     icon: "pin",
-    hint: "Directions to every celebration",
+    hint: "Directions & maps",
     body: "Where each celebration is held. Tap any address for directions.",
     venues: true,
   },
