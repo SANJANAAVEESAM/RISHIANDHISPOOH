@@ -20,16 +20,19 @@ const IST = (month: number, day: number, hour: number, minute: number) =>
 /** Muhurtham — 27 August, 10:05 AM IST. */
 export const WEDDING_DATE = IST(7, 27, 10, 5);
 
-export const WEDDING_DATE_RANGE = `August 15th – 27th, ${WEDDING_YEAR}`;
+export const WEDDING_DATE_RANGE = `From August 15th – 27th, ${WEDDING_YEAR}`;
 
 export const WHATSAPP_NUMBER = "18326686089";
 
 /**
- * Where the invitation lives. Share previews need absolute URLs — a crawler
- * has no page context to resolve a relative path against, which is why no
- * photograph was appearing.
+ * Fallback origin only.
+ *
+ * Share previews are built from the host the page was actually served on —
+ * see __root.tsx. This is used solely when there is no request to read one
+ * from, which in practice means nothing a guest will ever see. Left here so
+ * the tags always have something absolute to fall back to.
  */
-export const SITE_URL = "https://thelavstory.com";
+export const SITE_URL = "https://rishiandhispooh.vercel.app";
 
 
 /** Credited in the closing line. */

@@ -7,11 +7,40 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { createIsomorphicFn } from "@tanstack/react-start";
+import { getRequestHost, getRequestProtocol } from "@tanstack/react-start/server";
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { COUPLE, SITE_URL } from "@/components/wedding/data";
 import backdrop from "../assets/backdrop.jpg";
+
+/**
+ * The origin this page is actually being served from.
+ *
+ * Share previews need absolute URLs — a crawler has no page to resolve a
+ * relative path against. Those URLs used to be built from a hardcoded
+ * SITE_URL, which is how WhatsApp ended up showing the other couple this
+ * project was forked from: the tag pointed at their live domain, so that is
+ * the photograph it fetched. Reading the request instead means the preview is
+ * correct on the real domain, on the vercel.app address and on every preview
+ * deployment, with no constant to remember to change.
+ *
+ * The server half and its imports are stripped from the client bundle.
+ */
+const siteOrigin = createIsomorphicFn()
+  .server(() => {
+    try {
+      // Vercel terminates TLS at the edge, so the origin server sees plain
+      // HTTP — the forwarded headers are the only truthful source here.
+      const host = getRequestHost({ xForwardedHost: true });
+      if (!host) return SITE_URL;
+      return `${getRequestProtocol({ xForwardedProto: true })}://${host}`;
+    } catch {
+      return SITE_URL;
+    }
+  })
+  .client(() => window.location.origin);
 
 
 function NotFoundComponent() {
@@ -72,7 +101,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
+  head: () => {
+    const origin = siteOrigin();
+    return {
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
@@ -83,13 +114,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       // Absolute, and a purpose-made 1200x630 card rather than the portrait
       // photograph — sharing apps crop 1.91:1, and a portrait loses their faces.
-      { property: "og:image", content: `${SITE_URL}/share.jpg` },
+      { property: "og:image", content: `${origin}/share.jpg` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       { property: "og:image:alt", content: `${COUPLE.bride} and ${COUPLE.groom}` },
-      { property: "og:url", content: SITE_URL },
+      { property: "og:url", content: origin },
       { property: "og:site_name", content: `${COUPLE.bride} & ${COUPLE.groom}` },
-      { name: "twitter:image", content: `${SITE_URL}/share.jpg` },
+      { name: "twitter:image", content: `${origin}/share.jpg` },
       { name: "twitter:card", content: "summary_large_image" },
       // Unlisted rather than private — see public/robots.txt.
       { name: "robots", content: "noindex, nofollow" },
@@ -113,7 +144,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Cormorant+Infant:ital,wght@0,300;0,400;1,300;1,400&family=Karla:wght@300;400;500;600;700&family=Parisienne&family=Pinyon+Script&display=swap",
       },
     ],
-  }),
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

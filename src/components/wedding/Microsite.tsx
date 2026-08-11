@@ -116,7 +116,7 @@ function Opening() {
         tail={
           <div className="mt-10 flex flex-col items-center gap-8 text-center">
             <p
-              className="font-display leading-tight lowercase first-letter:uppercase text-foreground"
+              className="font-display leading-tight text-foreground"
               style={{ fontSize: "clamp(1.8rem, 8vw, 2.15rem)" }}
             >
               {WEDDING_DATE_RANGE}
