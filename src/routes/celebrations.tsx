@@ -495,6 +495,352 @@ function Stubs() {
 
 /* -------------------------------- switcher -------------------------------- */
 
+/* ---------------------------- I: full-bleed panels ---------------------------- */
+
+/** One screen per celebration, snapping as you scroll. */
+function Panels() {
+  return (
+    <>
+      <Heading />
+      <div
+        className="no-scrollbar mt-8 h-[62vh] overflow-y-auto"
+        style={{ scrollSnapType: "y mandatory" }}
+      >
+        {STOPS.map(({ day, event }, i) => (
+          <section
+            key={event.slug}
+            className="relative flex h-full flex-col items-center justify-center px-8 text-center"
+            style={{
+              scrollSnapAlign: "start",
+              borderTop: i === 0 ? "none" : `1px solid ${HAIRLINE}`,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              className="font-display text-[3.4rem] leading-none text-bronze/18"
+            >
+              {ordinal(i)}
+            </span>
+            <p className="mt-2 font-body text-[0.66rem] font-semibold tracking-[0.2em] uppercase text-bronze-deep">
+              {dateLine(day)}
+            </p>
+            <h3 className="mt-2 font-display text-[2.1rem] leading-tight font-semibold text-ink-strong">
+              {event.name}
+            </h3>
+            <p className="font-display text-[1.15rem] text-muted-foreground">{event.time}</p>
+            <div className="mt-5">
+              <Venue event={event} />
+            </div>
+          </section>
+        ))}
+      </div>
+      <p className="mt-4 text-center font-body text-[0.6rem] tracking-[0.2em] uppercase text-muted-foreground/70">
+        Scroll within <span aria-hidden="true">↕</span>
+      </p>
+    </>
+  );
+}
+
+/* ------------------------------ J: day picker ------------------------------ */
+
+/** Dates as chips; the chosen day's events sit below. */
+function Picker() {
+  const [pick, setPick] = useState(0);
+  const day = EVENT_DAYS[pick];
+
+  return (
+    <>
+      <Heading />
+      <div className="no-scrollbar mt-8 overflow-x-auto">
+        <div className="flex w-max gap-2.5 px-5">
+          {EVENT_DAYS.map((d, i) => {
+            const [num, month = ""] = d.date.split(" ");
+            const on = i === pick;
+            return (
+              <button
+                key={d.date}
+                type="button"
+                onClick={() => setPick(i)}
+                className="flex w-[4.2rem] shrink-0 flex-col items-center rounded-2xl py-3"
+                style={{
+                  background: on ? "var(--bronze)" : "color-mix(in oklab, var(--ivory) 70%, transparent)",
+                  border: `1px solid ${on ? "transparent" : HAIRLINE}`,
+                  color: on ? "var(--primary-foreground)" : "var(--foreground)",
+                }}
+              >
+                <span className="font-display text-[1.45rem] leading-none">{num}</span>
+                <span className="mt-1 font-body text-[0.52rem] font-semibold tracking-[0.14em] uppercase opacity-80">
+                  {month.slice(0, 3)}
+                </span>
+                <span className="font-body text-[0.5rem] tracking-[0.1em] uppercase opacity-60">
+                  {d.weekday.slice(0, 3)}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mt-8 px-5">
+        {day.events.map((event, i) => (
+          <div
+            key={event.slug}
+            className="py-5 text-center"
+            style={{ borderTop: i === 0 ? "none" : `1px solid ${HAIRLINE}` }}
+          >
+            <h3 className="font-display text-[1.7rem] leading-tight font-semibold text-ink-strong">
+              {event.name}
+            </h3>
+            <p className="font-display text-[1.05rem] text-muted-foreground">{event.time}</p>
+            <div className="mt-3">
+              <Venue event={event} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ---------------------------- K: numeral watermark ---------------------------- */
+
+function Watermark() {
+  return (
+    <>
+      <Heading />
+      <div className="mt-10 px-5">
+        {STOPS.map(({ day, event }, i) => (
+          <div
+            key={event.slug}
+            className="relative overflow-hidden py-7"
+            style={{ borderTop: i === 0 ? "none" : `1px solid ${HAIRLINE}` }}
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -top-3 -right-1 font-display leading-none text-bronze/12 select-none"
+              style={{ fontSize: "5.5rem" }}
+            >
+              {ordinal(i)}
+            </span>
+            <p className="font-body text-[0.64rem] font-semibold tracking-[0.18em] uppercase text-bronze-deep">
+              {dateLine(day)}
+            </p>
+            <h3 className="mt-1.5 font-display text-[1.7rem] leading-tight font-semibold text-ink-strong">
+              {event.name}
+            </h3>
+            <p className="font-display text-[1.05rem] text-muted-foreground">{event.time}</p>
+            <div className="relative mt-3">
+              <Venue event={event} center={false} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* ------------------------------- L: compact grid ------------------------------- */
+
+function Grid() {
+  return (
+    <>
+      <Heading />
+      <div className="mt-10 grid grid-cols-2 gap-3 px-5">
+        {STOPS.map(({ day, event }, i) => {
+          const last = i === STOPS.length - 1;
+          return (
+            <article
+              key={event.slug}
+              // An odd count leaves an orphan, so the final celebration — the
+              // wedding — takes the full width rather than half of a row.
+              className={`relative overflow-hidden rounded-2xl px-4 py-6 text-center ${last ? "col-span-2" : ""}`}
+              style={CARD}
+            >
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-px"
+                style={{ background: "var(--gradient-gold)" }}
+              />
+              <p className="font-body text-[0.58rem] font-semibold tracking-[0.14em] uppercase text-bronze-deep">
+                {day.date}
+              </p>
+              <h3
+                className={`mt-1.5 font-display leading-tight font-semibold text-ink-strong ${last ? "text-[1.6rem]" : "text-[1.25rem]"}`}
+              >
+                {event.name}
+              </h3>
+              <p className="font-display text-[0.95rem] text-muted-foreground">{event.time}</p>
+              <p className="mt-2 font-body text-[0.68rem] leading-snug text-foreground/75">
+                {event.venue.name}
+              </p>
+              <Directions event={event} className="mt-2" />
+            </article>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+/* -------------------------------- M: the stack -------------------------------- */
+
+/** Cards laid down slightly askew, like a pile of invitations. */
+function Askew() {
+  return (
+    <>
+      <Heading />
+      <div className="mt-12 flex flex-col gap-5 px-6">
+        {STOPS.map(({ day, event }, i) => (
+          <article
+            key={event.slug}
+            className="relative overflow-hidden rounded-[14px] px-5 py-6 text-center"
+            style={{
+              ...CARD,
+              transform: `rotate(${(i % 2 === 0 ? -1 : 1) * (1.1 + (i % 3) * 0.35)}deg)`,
+              boxShadow: "0 14px 32px -18px oklch(0.32 0.03 60 / 0.5)",
+            }}
+          >
+            <p className="font-body text-[0.6rem] font-semibold tracking-[0.18em] uppercase text-bronze-deep">
+              {dateLine(day)}
+            </p>
+            <h3 className="mt-1.5 font-display text-[1.5rem] leading-tight font-semibold text-ink-strong">
+              {event.name}
+            </h3>
+            <p className="font-display text-[1rem] text-muted-foreground">{event.time}</p>
+            <p className="mt-2 font-body text-[0.72rem] leading-snug text-foreground/75">
+              {event.venue.name}
+            </p>
+            <Directions event={event} className="mt-2" />
+          </article>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* --------------------------------- N: ledger --------------------------------- */
+
+/** The formal ruled list a printed card would carry. */
+function Ledger() {
+  return (
+    <>
+      <Heading />
+      <div className="mt-10 px-6">
+        <div
+          className="flex items-baseline gap-3 pb-2 font-body text-[0.52rem] font-semibold tracking-[0.2em] uppercase text-muted-foreground"
+          style={{ borderBottom: `1px solid ${HAIRLINE}` }}
+        >
+          <span className="w-[3.6rem] shrink-0">Date</span>
+          <span className="flex-1">Celebration</span>
+          <span className="shrink-0">Time</span>
+        </div>
+
+        {STOPS.map(({ day, event }) => (
+          <div
+            key={event.slug}
+            className="py-4"
+            style={{ borderBottom: `1px solid ${HAIRLINE}` }}
+          >
+            <div className="flex items-baseline gap-3">
+              <span className="w-[3.6rem] shrink-0 font-body text-[0.62rem] font-semibold tracking-[0.1em] uppercase text-bronze-deep">
+                {day.date.split(" ")[0]} {day.date.split(" ")[1]?.slice(0, 3)}
+              </span>
+              <span className="flex-1 font-display text-[1.3rem] leading-tight font-semibold text-ink-strong">
+                {event.name}
+              </span>
+              <span className="shrink-0 font-display text-[0.95rem] whitespace-nowrap text-muted-foreground">
+                {event.time.replace("Muhurtham: ", "")}
+              </span>
+            </div>
+            <div className="mt-1 pl-[4.35rem]">
+              <p className="font-body text-[0.72rem] leading-snug text-muted-foreground">
+                {event.venue.name}
+              </p>
+              <Directions event={event} className="mt-1.5" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* -------------------------------- O: gold bands -------------------------------- */
+
+function Bands() {
+  return (
+    <>
+      <Heading />
+      <div className="mt-10">
+        {STOPS.map(({ day, event }, i) => (
+          <div
+            key={event.slug}
+            className="px-6 py-6 text-center"
+            style={{
+              background:
+                i % 2 === 0
+                  ? "color-mix(in oklab, var(--gold) 11%, transparent)"
+                  : "transparent",
+            }}
+          >
+            <p className="font-body text-[0.6rem] font-semibold tracking-[0.2em] uppercase text-bronze-deep">
+              {dateLine(day)}
+            </p>
+            <h3 className="mt-1.5 font-display text-[1.6rem] leading-tight font-semibold text-ink-strong">
+              {event.name}
+            </h3>
+            <p className="font-display text-[1.02rem] text-muted-foreground">{event.time}</p>
+            <p className="mt-2 font-body text-[0.74rem] leading-snug text-foreground/75">
+              {event.venue.name}
+            </p>
+            <Directions event={event} className="mt-2" />
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/* -------------------------------- P: arches -------------------------------- */
+
+/** Arch-topped cards, after the Charminar's own. */
+function Arches() {
+  return (
+    <>
+      <Heading />
+      <div className="mt-10 flex flex-col gap-5 px-6">
+        {STOPS.map(({ day, event }) => (
+          <article
+            key={event.slug}
+            className="relative overflow-hidden px-5 pt-9 pb-6 text-center"
+            style={{
+              ...CARD,
+              borderRadius: "50% 50% 16px 16px / 26% 26% 16px 16px",
+            }}
+          >
+            <p className="font-body text-[0.6rem] font-semibold tracking-[0.18em] uppercase text-bronze-deep">
+              {dateLine(day)}
+            </p>
+            <h3 className="mt-1.5 font-display text-[1.55rem] leading-tight font-semibold text-ink-strong">
+              {event.name}
+            </h3>
+            <p className="font-display text-[1.02rem] text-muted-foreground">{event.time}</p>
+            <span
+              aria-hidden="true"
+              className="mx-auto my-3.5 block h-px w-10"
+              style={{ background: "color-mix(in oklab, var(--gold) 55%, transparent)" }}
+            />
+            <p className="font-body text-[0.74rem] leading-snug text-foreground/75">
+              {event.venue.name}
+            </p>
+            <Directions event={event} className="mt-2" />
+          </article>
+        ))}
+      </div>
+    </>
+  );
+}
+
 const LAYOUTS: { key: string; name: string; node: ReactNode }[] = [
   { key: "A", name: "Swipe tiles — live now", node: <Swipe /> },
   { key: "B", name: "Timeline with a spine", node: <Spine /> },
@@ -504,6 +850,14 @@ const LAYOUTS: { key: string; name: string; node: ReactNode }[] = [
   { key: "F", name: "Accordion", node: <Accordion /> },
   { key: "G", name: "Grouped by day", node: <Agenda /> },
   { key: "H", name: "Ticket stubs", node: <Stubs /> },
+  { key: "I", name: "Full-bleed panels", node: <Panels /> },
+  { key: "J", name: "Day picker", node: <Picker /> },
+  { key: "K", name: "Numeral watermark", node: <Watermark /> },
+  { key: "L", name: "Compact grid", node: <Grid /> },
+  { key: "M", name: "Askew stack", node: <Askew /> },
+  { key: "N", name: "Ledger", node: <Ledger /> },
+  { key: "O", name: "Gold bands", node: <Bands /> },
+  { key: "P", name: "Arches", node: <Arches /> },
 ];
 
 function Layouts() {
@@ -525,7 +879,9 @@ function Layouts() {
         <p className="glass rounded-full px-4 py-1.5 font-body text-[0.62rem] tracking-[0.14em] text-foreground/80 uppercase">
           {LAYOUTS[i].key} · {LAYOUTS[i].name}
         </p>
-        <div className="glass flex gap-1 rounded-full p-1.5">
+        {/* Wraps: sixteen chips in one row is 570px, which is wider than any
+            phone. */}
+        <div className="glass flex max-w-full flex-wrap justify-center gap-1 rounded-2xl p-1.5">
           {LAYOUTS.map((l2, idx) => (
             <button
               key={l2.key}
