@@ -316,7 +316,7 @@ function EventsSection() {
                       {event.venue.address}
                     </p>
                   )}
-                  <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+                  <div className="mt-3.5 flex flex-wrap items-center gap-x-4 gap-y-2.5">
                     {directions && (
                       <a
                         href={directions}
@@ -328,12 +328,34 @@ function EventsSection() {
                       </a>
                     )}
                     {day.schedule && (
+                      // A chip rather than another underlined link. Sat beside
+                      // Directions in the same style, nothing said one opened
+                      // a sheet on the page and the other left for a map — and
+                      // the one people would not think to look for was the one
+                      // that looked like plain text.
                       <button
                         type="button"
                         onClick={() => setOpenDay(day.date)}
-                        className="inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
+                        className="inline-flex items-center gap-2 rounded-full px-3.5 py-2 font-body text-[0.58rem] font-semibold tracking-[0.16em] uppercase text-bronze-deep transition-transform active:scale-[0.98]"
+                        style={{
+                          background: "color-mix(in oklab, var(--gold) 20%, transparent)",
+                          border: "1px solid color-mix(in oklab, var(--gold) 48%, transparent)",
+                        }}
                       >
-                        The day&rsquo;s timeline <span aria-hidden="true">→</span>
+                        <svg
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          className="size-3.5 shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.7"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="9" />
+                          <path d="M12 7.2V12l3.1 1.9" />
+                        </svg>
+                        See the day&rsquo;s timeline
                       </button>
                     )}
                   </div>

@@ -66,7 +66,7 @@ export function Hero({ live }: { live: boolean }) {
               className="absolute inset-0"
               style={{
                 background:
-                  "linear-gradient(180deg, oklch(0.2 0.03 55 / 0.34), oklch(0.2 0.03 55 / 0.14) 42%, oklch(0.2 0.03 55 / 0.28) 68%, oklch(0.18 0.03 55 / 0.6))",
+                  "linear-gradient(180deg, oklch(0.2 0.03 55 / 0.2), oklch(0.2 0.03 55 / 0.06) 42%, oklch(0.2 0.03 55 / 0.2) 70%, oklch(0.18 0.03 55 / 0.5))",
               }}
             />
           </div>
