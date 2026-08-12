@@ -17,21 +17,22 @@ export function Hero({ live }: { live: boolean }) {
     <div ref={wrapRef} id="home" className="relative h-[135vh]">
       {/* Sits above the next section, which is pulled up underneath it — the
           card stays opaque until it has collapsed out of the way. */}
+      {/* Top-anchored, not centred. Two things depend on the card starting at
+          the top of this box and collapsing upward from its foot: the nav pill
+          is positioned to sit just inside the card's top edge, and the section
+          below is pulled up underneath, so only an opaque card covering the
+          box keeps it hidden until the card is out of the way. */}
       <div
-        className="sticky top-0 z-10 flex h-[100dvh] items-center p-3"
+        className="sticky top-0 z-10 h-[100dvh] p-3"
         style={{ paddingTop: "calc(env(safe-area-inset-top) + 0.75rem)" }}
       >
         <div
           className="relative w-full overflow-hidden rounded-[24px]"
           style={{
-            // Not the full screen. A full-height card is an aspect of about
-            // 0.48, and the drawing is 0.75 — filling that would have meant
-            // throwing away a third of it or standing the couple in a well of
-            // empty cream. At 78% the frame is close to the artwork's own.
-            // Not the full screen. A full-height card is an aspect of about
-            // 0.48 against the photograph's 0.75, which crops away a third of
-            // its width. At 78% the frame is nearer what was shot.
-            height: `${(78 - progress * COLLAPSE).toFixed(2)}%`,
+            // Full height. A shorter card was a workaround for a landscape
+            // photograph that could not be cropped to this frame without
+            // losing its scene; this one is a portrait, which suits it.
+            height: `${(100 - progress * COLLAPSE).toFixed(2)}%`,
             boxShadow: "var(--shadow-paper)",
           }}
         >
