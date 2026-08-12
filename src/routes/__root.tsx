@@ -12,7 +12,7 @@ import { getRequestHost, getRequestProtocol } from "@tanstack/react-start/server
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { COUPLE, SITE_URL } from "@/components/wedding/data";
+import { COUPLE_AMP, COUPLE_AND, SITE_URL } from "@/components/wedding/data";
 import backdrop from "../assets/backdrop.jpg";
 
 /**
@@ -107,19 +107,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: `${COUPLE.bride} & ${COUPLE.groom}` },
-      { name: "description", content: `The wedding of ${COUPLE.bride} & ${COUPLE.groom}.` },
-      { property: "og:title", content: `${COUPLE.bride} & ${COUPLE.groom}` },
-      { property: "og:description", content: `The wedding of ${COUPLE.bride} & ${COUPLE.groom}.` },
+      { title: COUPLE_AMP },
+      { name: "description", content: `The wedding of ${COUPLE_AMP}.` },
+      { property: "og:title", content: COUPLE_AMP },
+      { property: "og:description", content: `The wedding of ${COUPLE_AMP}.` },
       { property: "og:type", content: "website" },
       // Absolute, and a purpose-made 1200x630 card rather than the portrait
       // photograph — sharing apps crop 1.91:1, and a portrait loses their faces.
       { property: "og:image", content: `${origin}/share.jpg` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: `${COUPLE.bride} and ${COUPLE.groom}` },
+      { property: "og:image:alt", content: COUPLE_AND },
       { property: "og:url", content: origin },
-      { property: "og:site_name", content: `${COUPLE.bride} & ${COUPLE.groom}` },
+      { property: "og:site_name", content: COUPLE_AMP },
       { name: "twitter:image", content: `${origin}/share.jpg` },
       { name: "twitter:card", content: "summary_large_image" },
       // Unlisted rather than private — see public/robots.txt.

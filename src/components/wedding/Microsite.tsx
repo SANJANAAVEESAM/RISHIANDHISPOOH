@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   CONTACTS,
   COUPLE,
+  COUPLE_AMP,
   DESIGNER,
   DESIGNER_URL,
   DETAIL_CARDS,
@@ -786,7 +787,7 @@ function Faqs() {
         onClick={() => setContactOpen(true)}
         className="mt-7 rounded-full bg-bronze px-7 py-3.5 font-body text-[0.64rem] font-medium tracking-[0.22em] uppercase text-primary-foreground transition-opacity hover:opacity-90 active:scale-[0.99]"
       >
-        Reach out to {COUPLE.bride} or {COUPLE.groom}
+        Reach out to {COUPLE.groom} or {COUPLE.bride}
       </button>
       </Section>
 
@@ -871,7 +872,7 @@ export function Microsite({ live }: { live: boolean }) {
                 tone — at this size, under this much letter-spacing, weight
                 alone against a grey would not have read as emphasis. */}
             <p className="mt-8 font-body text-[0.68rem] font-bold tracking-[0.3em] uppercase text-ink-strong">
-              {COUPLE.bride} & {COUPLE.groom}
+              {COUPLE_AMP}
             </p>
           </Reveal>
         </section>

@@ -1,4 +1,4 @@
-import { COUPLE } from "@/components/wedding/data";
+import { COUPLE, COUPLE_AMP } from "@/components/wedding/data";
 
 export type CalendarEvent = {
   title: string;
@@ -32,12 +32,12 @@ export function googleCalendarUrl(event: CalendarEvent) {
 export function downloadIcs(event: CalendarEvent) {
   // Derived from the couple rather than hardcoded, so a copy of this project
   // cannot ship someone else's name inside the calendar files guests download.
-  const slug = `${COUPLE.bride}-${COUPLE.groom}`.toLowerCase().replace(/\W+/g, "-");
+  const slug = `${COUPLE.groom}-${COUPLE.bride}`.toLowerCase().replace(/\W+/g, "-");
   const uid = `${icsStamp(event.startUtc)}-${event.title.replace(/\W+/g, "")}@${slug}`;
   const ics = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    `PRODID:-//${COUPLE.bride} & ${COUPLE.groom}//Wedding//EN`,
+    `PRODID:-//${COUPLE_AMP}//Wedding//EN`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",

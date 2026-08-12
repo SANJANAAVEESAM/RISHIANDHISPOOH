@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { COUPLE } from "./data";
+import { COUPLE_AND } from "./data";
 import navMark from "@/assets/monogram-mark.png";
 
 const MENU_LINKS = [
@@ -61,7 +61,7 @@ export function FloatingNav({ visible }: { visible: boolean }) {
               as the couple's mark rather than a monogram font. */}
           <img
             src={navMark}
-            alt={`${COUPLE.bride} and ${COUPLE.groom}`}
+            alt={COUPLE_AND}
             width={304}
             height={220}
             className="h-9 w-auto"

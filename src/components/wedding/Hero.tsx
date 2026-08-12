@@ -1,5 +1,5 @@
 import couplePhoto from "@/assets/couple.jpg";
-import { COUPLE } from "./data";
+import { COUPLE_AMP, COUPLE_AND } from "./data";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
 
 /** How much of its height the hero gives up across the scroll, in percent. */
@@ -28,7 +28,7 @@ export function Hero({ live }: { live: boolean }) {
       <div
         className="sticky top-0 z-10 h-[100dvh]"
         role="img"
-        aria-label={`An illustrated portrait of ${COUPLE.bride} and ${COUPLE.groom}`}
+        aria-label={`An illustrated portrait of ${COUPLE_AND}`}
       >
         <div
           className="relative w-full overflow-hidden"
@@ -91,7 +91,7 @@ export function Hero({ live }: { live: boolean }) {
                 textShadow: "0 2px 18px oklch(0.24 0.03 60 / 0.4)",
               }}
             >
-              {COUPLE.bride} &amp; {COUPLE.groom}
+              {COUPLE_AMP}
             </h1>
 
             {/* Fades out at both ends rather than stopping dead. A rule with

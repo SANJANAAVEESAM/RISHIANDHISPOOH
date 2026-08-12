@@ -1,6 +1,18 @@
 
 export const COUPLE = { bride: "Pooja", groom: "Rithvick" };
 
+/**
+ * The pair as it is written, everywhere it is written.
+ *
+ * Groom first, at the couple's request. Kept here rather than spelled out at
+ * each of the fifteen places the two names appear together — the invitation,
+ * the hero, the tab title, the share card, the calendar file — because an
+ * order repeated that many times is an order that will eventually disagree
+ * with itself.
+ */
+export const COUPLE_AMP = `${COUPLE.groom} & ${COUPLE.bride}`;
+export const COUPLE_AND = `${COUPLE.groom} and ${COUPLE.bride}`;
+
 /** ⚠️ Year is unconfirmed (reference doc said 2027) — change it here only. */
 export const WEDDING_YEAR = 2026;
 
@@ -50,8 +62,8 @@ export const CONTACTS: {
   display: string;
   whatsapp?: string;
 }[] = [
-  { name: COUPLE.bride, tel: "+916301560814", display: "+91 63015 60814" },
   { name: COUPLE.groom, tel: "+918500603422", display: "+91 85006 03422" },
+  { name: COUPLE.bride, tel: "+916301560814", display: "+91 63015 60814" },
 ];
 
 import type { EventTheme } from "./eventThemes";
@@ -284,8 +296,8 @@ export const EVENTS: WeddingEvent[] = EVENT_DAYS.flatMap((day) => day.events);
 
 
 export const FULL_WEDDING_CAL = {
-  title: `${COUPLE.bride} & ${COUPLE.groom} — Wedding Celebrations`,
-  description: `Celebrations for the wedding of ${COUPLE.bride} & ${COUPLE.groom}. Muhurtham on 27 August at 10:05 AM.`,
+  title: `${COUPLE_AMP} — Wedding Celebrations`,
+  description: `Celebrations for the wedding of ${COUPLE_AMP}. Muhurtham on 27 August at 10:05 AM.`,
   location: "Hyderabad, Telangana",
   startUtc: IST(7, 15, 9, 0).toISOString(),
   endUtc: IST(7, 27, 14, 0).toISOString(),

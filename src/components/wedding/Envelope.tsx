@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { COUPLE } from "./data";
+import { COUPLE_AND } from "./data";
 import { startMusic } from "@/lib/music";
 import backdrop from "@/assets/backdrop.jpg";
 import monogram from "@/assets/monogram.png";
@@ -94,7 +94,7 @@ export function Envelope({ onOpened }: { onOpened: () => void }) {
             phones sideways. */}
         <img
           src={monogram}
-          alt={`${COUPLE.bride} and ${COUPLE.groom}`}
+          alt={COUPLE_AND}
           width={1248}
           height={1252}
           className="h-auto w-[74%]"
@@ -127,7 +127,7 @@ export function Envelope({ onOpened }: { onOpened: () => void }) {
             marginTop: "-11%",
           }}
         >
-          {COUPLE.bride} and {COUPLE.groom}
+          {COUPLE_AND}
         </p>
       </div>
 

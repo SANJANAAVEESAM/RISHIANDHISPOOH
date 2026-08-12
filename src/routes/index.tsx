@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { COUPLE, SITE_URL } from "@/components/wedding/data";
+import { COUPLE_AMP, SITE_URL } from "@/components/wedding/data";
 import { Envelope } from "@/components/wedding/Envelope";
 import { Microsite } from "@/components/wedding/Microsite";
 
 // Derived from COUPLE so it cannot drift from the rest of the invitation.
 // TODO(content): add the dates and place once they are set — this is what
 // shows in a shared link, so it is worth being specific.
-const TITLE = `${COUPLE.bride} & ${COUPLE.groom}`;
-const DESCRIPTION = `Open our invitation: celebrations, venue details and dress codes for the wedding of ${COUPLE.bride} & ${COUPLE.groom}.`;
+const TITLE = COUPLE_AMP;
+const DESCRIPTION = `Open our invitation: celebrations, venue details and dress codes for the wedding of ${COUPLE_AMP}.`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
