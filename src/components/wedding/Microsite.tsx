@@ -115,9 +115,15 @@ function Opening() {
         }}
         tail={
           <div className="mt-10 flex flex-col items-center gap-8 text-center">
+            {/* One line, always. Measured rather than guessed: set in
+                Cormorant Garamond this string is 11.81 times its own font
+                size, and the column it sits in is 90% of min(100vw, 26rem).
+                7.2vw clears that on every width from 300px up, and the 1.9rem
+                ceiling holds it once the column stops growing at 26rem. The
+                8vw it used to carry could not fit on any phone. */}
             <p
-              className="font-display leading-tight text-foreground"
-              style={{ fontSize: "clamp(1.8rem, 8vw, 2.15rem)" }}
+              className="font-display leading-tight whitespace-nowrap text-foreground"
+              style={{ fontSize: "clamp(1.35rem, 7.2vw, 1.9rem)" }}
             >
               {WEDDING_DATE_RANGE}
             </p>

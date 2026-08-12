@@ -36,19 +36,16 @@ export function Hero({ live }: { live: boolean }) {
             boxShadow: "var(--shadow-paper)",
           }}
         >
-          {/* The frame is about 0.48 against the photograph's 0.80, so two
-              fifths of its width goes — and only its width, since the card is
-              the taller shape, which is why the whole sky survives.
-
-              Centred. Biasing the window left was meant to protect the bridge
-              arch, but it pushed the couple to the right of the card, and they
-              are the subject. Centred they sit on the card's midline and both
-              the arch and the Charminar still make the frame. */}
+          {/* Covers the frame, unlike the line drawing that briefly sat here:
+              this illustration is painted edge to edge, so cropping it takes a
+              sleeve and a shoulder rather than cutting a figure out of empty
+              paper. Centred, and the crop is horizontal only — the card is the
+              taller shape, so the full height of the picture survives. */}
           <img
             src={couplePhoto}
-            alt={`${COUPLE.bride} and ${COUPLE.groom} before the Charminar at dusk`}
-            width={1122}
-            height={1402}
+            alt={`An illustrated portrait of ${COUPLE.bride} and ${COUPLE.groom}`}
+            width={1000}
+            height={1333}
             className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
           />
 
