@@ -13,6 +13,10 @@ const COLLAPSE = 48;
  * the other way into something near black; this sits between, and the softening
  * does the work the darkness was doing.
  *
+ * Its foot dissolves rather than stopping: the picture is masked away over the
+ * last stretch so it melts into the page instead of ending on a ruled line —
+ * which is what the collapsing edge looked like on the way up.
+ *
  * Pinned to the top and collapsing as you scroll, the names riding the rising
  * bottom edge, until the section below takes over.
  */
@@ -21,7 +25,11 @@ export function Hero({ live }: { live: boolean }) {
 
   return (
     <div ref={wrapRef} id="home" className="relative h-[135vh]">
-      <div className="sticky top-0 z-10 h-[100dvh]">
+      <div
+        className="sticky top-0 z-10 h-[100dvh]"
+        role="img"
+        aria-label={`An illustrated portrait of ${COUPLE.bride} and ${COUPLE.groom}`}
+      >
         <div
           className="relative w-full overflow-hidden"
           style={{
@@ -31,35 +39,45 @@ export function Hero({ live }: { live: boolean }) {
             background: "var(--background)",
           }}
         >
-          <img
-            src={couplePhoto}
-            alt={`An illustrated portrait of ${COUPLE.bride} and ${COUPLE.groom}`}
-            width={1000}
-            height={1333}
-            // Sharp. A blur was tried here to soften the ground under the
-            // names and it softened the couple with it, which is the one thing
-            // on this screen that should be in focus. The veil below does that
-            // job instead.
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
-
-          {/* Light through the middle so the picture stays itself, drawn deeper
-              at the foot where the names sit. */}
+          {/* The picture and its veil are masked together so they dissolve as
+              one. Fading only the picture would leave the veil behind as a
+              grey film over the cream, which is a worse edge than the hard one
+              it replaces. The cream showing through is the box's own
+              background, so there is nothing to keep in step with the page. */}
           <div
             aria-hidden="true"
             className="absolute inset-0"
             style={{
-              background:
-                "linear-gradient(180deg, oklch(0.2 0.03 55 / 0.34), oklch(0.2 0.03 55 / 0.14) 42%, oklch(0.2 0.03 55 / 0.28) 68%, oklch(0.18 0.03 55 / 0.6))",
+              maskImage: "linear-gradient(to bottom, #000 88%, transparent 100%)",
+              WebkitMaskImage: "linear-gradient(to bottom, #000 88%, transparent 100%)",
             }}
-          />
+          >
+            <img
+              src={couplePhoto}
+              alt=""
+              width={1000}
+              height={1333}
+              // Sharp. A blur was tried across the whole picture and softened
+              // the couple with it, which is the one thing on this screen that
+              // should be in focus. Only the bottom edge is soft now.
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(180deg, oklch(0.2 0.03 55 / 0.34), oklch(0.2 0.03 55 / 0.14) 42%, oklch(0.2 0.03 55 / 0.28) 68%, oklch(0.18 0.03 55 / 0.6))",
+              }}
+            />
+          </div>
 
           <div
             className="absolute inset-x-0 bottom-0 px-[7%]"
             style={{
-              // Lifted, and now clearing the home indicator as well — the flat
-              // 2.75rem it had sat under it on a modern phone.
-              paddingBottom: "calc(env(safe-area-inset-bottom) + 3.75rem)",
+              // Clear of the dissolve. The fade takes the bottom 12% of the
+              // box, and white type inside it would be fading towards cream —
+              // so the whole caption sits above where the fade begins.
+              paddingBottom: "calc(env(safe-area-inset-bottom) + 16vh)",
               opacity: live ? 1 : 0,
               transition: live ? "opacity 1100ms ease 250ms" : undefined,
             }}
