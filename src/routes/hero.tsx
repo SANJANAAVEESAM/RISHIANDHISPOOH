@@ -2,11 +2,12 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 
 import couplePhoto from "@/assets/couple.jpg";
+import coupleMask from "@/assets/couple-mask.png";
 import navMark from "@/assets/monogram-mark.png";
 import { COUPLE, WEDDING_DATE_RANGE } from "@/components/wedding/data";
 
 /**
- * SCRATCH ROUTE — eight treatments for the hero, at full screen.
+ * SCRATCH ROUTE — fourteen treatments for the hero, at full screen.
  *
  * These are about the look, not the choreography: each is shown at rest,
  * without the card's collapse on scroll. Whichever is chosen keeps the
@@ -40,12 +41,13 @@ function Scrim({ from = 44 }: { from?: number }) {
   );
 }
 
-function Photo({ className = "" }: { className?: string }) {
+function Photo({ className = "", style }: { className?: string; style?: React.CSSProperties }) {
   return (
     <img
       src={couplePhoto}
       alt={`${COUPLE.bride} and ${COUPLE.groom}`}
       className={`absolute inset-0 h-full w-full object-cover object-center ${className}`}
+      style={style}
     />
   );
 }
@@ -300,6 +302,184 @@ function Monogram() {
 
 /* -------------------------------- switcher -------------------------------- */
 
+/* ------------------------ using the picture differently ------------------------ */
+
+/**
+ * The couple with their background taken away.
+ *
+ * The colour comes from the same JPEG the other treatments use; only the shape
+ * is new, carried by a 13KB greyscale mask. Storing the cut-out as its own
+ * transparent PNG cost 1.1MB for the identical result.
+ *
+ * Both layers are sized `contain` and centred on the same box, and the mask
+ * shares the picture's aspect, so they land exactly on top of one another.
+ */
+function Cutout({ className = "", style = {} }: { className?: string; style?: React.CSSProperties }) {
+  return (
+    <div
+      aria-label={`${COUPLE.bride} and ${COUPLE.groom}`}
+      role="img"
+      className={className}
+      style={{
+        backgroundImage: `url(${couplePhoto})`,
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        maskImage: `url(${coupleMask})`,
+        WebkitMaskImage: `url(${coupleMask})`,
+        maskSize: "contain",
+        WebkitMaskSize: "contain",
+        maskPosition: "center",
+        WebkitMaskPosition: "center",
+        maskRepeat: "no-repeat",
+        WebkitMaskRepeat: "no-repeat",
+        ...style,
+      }}
+    />
+  );
+}
+
+/** I — no card, no frame: the couple standing on the page itself. */
+function OnThePage() {
+  return (
+    <Frame>
+      <div className="flex h-full flex-col">
+        <Cutout className="min-h-0 flex-1" />
+        <div className="shrink-0 pb-2">
+          <InkCaption size="clamp(2rem, 9.5vw, 2.7rem)" />
+        </div>
+      </div>
+    </Frame>
+  );
+}
+
+/** J — cut out, standing before a gold arch. */
+function ArchBehind() {
+  return (
+    <Frame>
+      <div className="relative flex h-full flex-col">
+        <div className="relative min-h-0 flex-1">
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-6 top-6 bottom-0"
+            style={{
+              borderRadius: "50% 50% 0 0 / 32% 32% 0 0",
+              background:
+                "linear-gradient(180deg, color-mix(in oklab, var(--gold) 34%, transparent), color-mix(in oklab, var(--gold) 8%, transparent))",
+            }}
+          />
+          <Cutout className="absolute inset-0" />
+        </div>
+        <div className="shrink-0 pb-2">
+          <InkCaption size="clamp(2rem, 9.5vw, 2.7rem)" />
+        </div>
+      </div>
+    </Frame>
+  );
+}
+
+/** K — the picture pulled into the invitation's own bronze. */
+function Duotone() {
+  return (
+    <Frame>
+      <div
+        className="relative h-full w-full overflow-hidden rounded-[24px]"
+        style={{ boxShadow: SHADOW, background: "var(--bronze-deep)" }}
+      >
+        <Photo className="opacity-90 grayscale" style={{ mixBlendMode: "luminosity" }} />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, color-mix(in oklab, var(--gold) 30%, transparent), oklch(0.3 0.06 55 / 0.55))",
+            mixBlendMode: "multiply",
+          }}
+        />
+        <Scrim from={50} />
+        <WhiteCaption />
+      </div>
+    </Frame>
+  );
+}
+
+/** L — a cameo, ringed in gold. */
+function Cameo() {
+  return (
+    <Frame>
+      <div className="flex h-full flex-col items-center justify-center">
+        <div
+          className="relative aspect-square w-[84%] overflow-hidden rounded-full"
+          style={{
+            boxShadow: "0 26px 60px -28px oklch(0.32 0.03 60 / 0.5)",
+            outline: "1px solid color-mix(in oklab, var(--gold) 55%, transparent)",
+            outlineOffset: "10px",
+          }}
+        >
+          <Photo />
+        </div>
+        <div className="mt-12 w-full">
+          <InkCaption size="clamp(2.1rem, 10vw, 2.9rem)" />
+        </div>
+      </div>
+    </Frame>
+  );
+}
+
+/** M — right in close, just their faces. */
+function CloseCrop() {
+  return (
+    <Frame>
+      <div
+        className="relative h-full w-full overflow-hidden rounded-[24px]"
+        style={{
+          boxShadow: SHADOW,
+          // Sized and placed as a background rather than object-fit, so the
+          // zoom is a number to turn rather than a transform to unpick.
+          backgroundImage: `url(${couplePhoto})`,
+          backgroundSize: "185%",
+          backgroundPosition: "48% 12%",
+        }}
+      >
+        <Scrim from={48} />
+        <WhiteCaption />
+      </div>
+    </Frame>
+  );
+}
+
+/** N — the picture as the page's own texture, type over it. */
+function Wash() {
+  return (
+    <div className="relative h-[100dvh] w-full overflow-hidden">
+      <Photo className="opacity-[0.22]" />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.965 0.012 80 / 0.5), oklch(0.965 0.012 80 / 0.05) 45%, oklch(0.965 0.012 80 / 0.85))",
+        }}
+      />
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-7">
+        <p className="font-body text-[0.6rem] font-medium tracking-[0.32em] uppercase text-bronze-deep">
+          Together with their families
+        </p>
+        <h1
+          className="mt-6 text-center font-display leading-[1.04] text-ink-strong italic"
+          style={{ fontSize: "clamp(2.9rem, 15vw, 4.2rem)", fontWeight: 400 }}
+        >
+          {NAMES}
+        </h1>
+        <span aria-hidden="true" className="mt-8 h-px w-20 bg-bronze/45" />
+        <p className="mt-8 font-body text-[0.64rem] font-medium tracking-[0.26em] uppercase text-bronze-deep">
+          {WEDDING_DATE_RANGE}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 const OPTIONS: { key: string; name: string; node: ReactNode }[] = [
   { key: "A", name: "As it is now", node: <AsIs /> },
   { key: "B", name: "Names above the picture", node: <NamesAbove /> },
@@ -309,6 +489,12 @@ const OPTIONS: { key: string; name: string; node: ReactNode }[] = [
   { key: "F", name: "Arched crown", node: <Arch /> },
   { key: "G", name: "Full bleed, no card", node: <FullBleed /> },
   { key: "H", name: "Monogram lockup", node: <Monogram /> },
+  { key: "I", name: "Cut out, on the page", node: <OnThePage /> },
+  { key: "J", name: "Cut out, before a gold arch", node: <ArchBehind /> },
+  { key: "K", name: "Duotone in bronze", node: <Duotone /> },
+  { key: "L", name: "Cameo, ringed in gold", node: <Cameo /> },
+  { key: "M", name: "Close on their faces", node: <CloseCrop /> },
+  { key: "N", name: "The picture as texture", node: <Wash /> },
 ];
 
 function HeroOptions() {
