@@ -28,36 +28,31 @@ export function Hero({ live }: { live: boolean }) {
             // 0.48, and the drawing is 0.75 — filling that would have meant
             // throwing away a third of it or standing the couple in a well of
             // empty cream. At 78% the frame is close to the artwork's own.
+            // Not the full screen. A full-height card is an aspect of about
+            // 0.48 against the photograph's 0.75, which crops away a third of
+            // its width. At 78% the frame is nearer what was shot.
             height: `${(78 - progress * COLLAPSE).toFixed(2)}%`,
             boxShadow: "var(--shadow-paper)",
-            // The card's own field, and the same cream the drawing was
-            // multiplied onto, so the artwork has no edge of its own.
-            background: "var(--background)",
           }}
         >
-          {/* Contained, not covering. This is a drawing, not a photograph:
-              cropping it to fill would cut an arm or a foot on some phones,
-              and against flat ground the space left over is invisible.
-              Anchored to the top, with the foot of the box kept for the names.
-              No slow zoom either — on flat line art it reads as a wobble. */}
+          {/* A photograph again, so it fills the frame. Centred: the couple sit
+              in the middle of it, and the card's aspect varies enough between
+              phones that any bias would favour one handset over another. */}
           <img
             src={couplePhoto}
-            alt={`An illustration of ${COUPLE.bride} and ${COUPLE.groom}`}
-            width={820}
-            height={1090}
-            className="absolute inset-0 h-full w-full object-contain object-top"
-            style={{ padding: "2% 3% 21%" }}
+            alt={`${COUPLE.bride} and ${COUPLE.groom}`}
+            width={768}
+            height={1024}
+            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
           />
 
-          {/* Cream, not shade. The names below are ink on a pale field now, so
-              the dark scrim that used to sit here would be a bruise across the
-              foot of a white drawing. This only lifts the figures clear. */}
+          {/* Enough shading under the type to hold white over a pale frame */}
           <div
             aria-hidden="true"
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, transparent 52%, oklch(0.965 0.012 80 / 0.88) 78%, oklch(0.965 0.012 80) 100%)",
+                "linear-gradient(180deg, transparent 44%, oklch(0.28 0.03 60 / 0.18) 66%, oklch(0.22 0.03 60 / 0.5) 100%)",
             }}
           />
 
@@ -69,30 +64,28 @@ export function Hero({ live }: { live: boolean }) {
               transition: live ? "opacity 1100ms ease 250ms" : undefined,
             }}
           >
-            {/* Ink, not white. The field under it is cream now — white type
-                would simply be gone, and the shadow that used to carry it over
-                sand has nothing to do here. */}
             <h1
-              className="text-center font-display leading-[1.08] text-ink-strong italic"
+              className="text-center font-display leading-[1.08] text-white italic"
               style={{
                 fontSize: "clamp(2.5rem, 12vw, 3.5rem)",
                 // Explicit: the h1 rule's 600 has no italic cut here and would fake-bold.
                 fontWeight: 400,
+                textShadow: "0 2px 18px oklch(0.24 0.03 60 / 0.4)",
               }}
             >
               {COUPLE.bride} &amp; {COUPLE.groom}
             </h1>
 
-            <div className="mt-7 h-px w-full bg-foreground/25" />
+            <div className="mt-7 h-px w-full bg-white/45" />
 
             <div className="mt-5 flex items-center justify-between">
               <span
                 aria-hidden="true"
-                className="animate-scroll-nudge font-body text-sm text-foreground/50"
+                className="animate-scroll-nudge font-body text-sm text-white/60"
               >
                 ↓
               </span>
-              <span className="font-body text-[0.62rem] font-light tracking-[0.34em] text-foreground/60 uppercase">
+              <span className="font-body text-[0.62rem] font-light tracking-[0.34em] text-white/65 uppercase">
                 Scroll to Explore
               </span>
             </div>
