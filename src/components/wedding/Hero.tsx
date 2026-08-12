@@ -36,18 +36,20 @@ export function Hero({ live }: { live: boolean }) {
             boxShadow: "var(--shadow-paper)",
           }}
         >
-          {/* Held a little left of centre. The frame is about 0.48 against the
-              photograph's 0.80, so two fifths of its width goes — and only its
-              width, since the card is the taller shape, which is why the whole
-              sky survives. At 42% the bridge arch stays on one side and the
-              Charminar on the other; centred, the arch starts to go. */}
+          {/* The frame is about 0.48 against the photograph's 0.80, so two
+              fifths of its width goes — and only its width, since the card is
+              the taller shape, which is why the whole sky survives.
+
+              Centred. Biasing the window left was meant to protect the bridge
+              arch, but it pushed the couple to the right of the card, and they
+              are the subject. Centred they sit on the card's midline and both
+              the arch and the Charminar still make the frame. */}
           <img
             src={couplePhoto}
             alt={`${COUPLE.bride} and ${COUPLE.groom} before the Charminar at dusk`}
             width={1122}
             height={1402}
-            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover"
-            style={{ objectPosition: "42% 50%" }}
+            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
           />
 
           {/* Enough shading under the type to hold white over a pale frame */}
