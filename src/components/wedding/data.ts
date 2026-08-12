@@ -122,10 +122,19 @@ export type WeddingEvent = {
   end: Date;
 };
 
+/** One line of a day's running order. */
+export type ScheduleItem = { time: string; what: string };
+
 export type EventDay = {
   date: string;
   weekday: string;
   events: WeddingEvent[];
+  /**
+   * The hour-by-hour running order for the whole day, shown in a sheet from
+   * any of that day's events. Only the two days that have one carry it — the
+   * rest simply do not offer the link.
+   */
+  schedule?: ScheduleItem[];
 };
 
 /** Three of the four celebrations share this venue. */
@@ -159,6 +168,12 @@ export const EVENT_DAYS: EventDay[] = [
   {
     date: "19 August",
     weekday: "Wednesday",
+    // Haldi and Sangeet share the day, so they share one running order.
+    schedule: [
+      { time: "9:00 AM", what: "Haldi" },
+      { time: "1:00 PM", what: "Lunch" },
+      { time: "7:00 PM", what: "Sangeet" },
+    ],
     events: [
       {
         slug: "haldi",
@@ -209,6 +224,16 @@ export const EVENT_DAYS: EventDay[] = [
   {
     date: "27 August",
     weekday: "Thursday",
+    // The wedding day, as the family set it out.
+    schedule: [
+      { time: "7:00 – 8:00 AM", what: "Eduru Kollu" },
+      { time: "8:30 AM", what: "Breakfast" },
+      { time: "10:05 AM", what: "Jilakarra Bellam — Muhurtham" },
+      { time: "10:05 – 10:45 AM", what: "Kanyadanam" },
+      { time: "10:45 – 11:00 AM", what: "Thali" },
+      { time: "12:00 PM", what: "Lunch" },
+      { time: "1:00 – 4:00 PM", what: "Guest meet" },
+    ],
     events: [
       {
         slug: "wedding",

@@ -55,14 +55,15 @@ export function FloatingNav({ visible }: { visible: boolean }) {
           aria-label="Back to top"
           className="flex items-center leading-none"
         >
-          {/* The couple's mark rather than their initials set in type. This is
-              a crop of the monogram on the envelope down to the interlocked
-              letters — the sprigs that frame it there turn to noise at 36px. */}
+          {/* The whole mark from the opening screen, sprigs and all, cropped
+              to its ink. It was the letters alone for a while — the sprigs were
+              assumed to be noise at this size, but they are what makes it read
+              as the couple's mark rather than a monogram font. */}
           <img
             src={navMark}
             alt={`${COUPLE.bride} and ${COUPLE.groom}`}
-            width={197}
-            height={240}
+            width={304}
+            height={220}
             className="h-9 w-auto"
             // The mark is a pale foil gold that all but vanished against the
             // glass, next to a near-black menu icon. Darkened rather than

@@ -2,60 +2,55 @@ import couplePhoto from "@/assets/couple.jpg";
 import { COUPLE } from "./data";
 import { useScrollProgress } from "@/hooks/use-scroll-progress";
 
-/** How much of its height the card gives up across the scroll, in percent. */
+/** How much of its height the hero gives up across the scroll, in percent. */
 const COLLAPSE = 48;
 
 /**
- * Scene 4 — full-bleed photo card on cream. It stays pinned to the top and
- * collapses in height as you scroll, the type riding its rising bottom edge,
- * until the cream page and the invitation line take over beneath it.
+ * Scene 4 — the couple filling the screen, their names along the foot.
+ *
+ * The picture is softened by a blur and held under a light warm veil. It began
+ * as a pale wash at a fifth opacity, which looked washed out, then went too far
+ * the other way into something near black; this sits between, and the softening
+ * does the work the darkness was doing.
+ *
+ * Pinned to the top and collapsing as you scroll, the names riding the rising
+ * bottom edge, until the section below takes over.
  */
 export function Hero({ live }: { live: boolean }) {
   const [wrapRef, progress] = useScrollProgress<HTMLDivElement>();
 
   return (
     <div ref={wrapRef} id="home" className="relative h-[135vh]">
-      {/* Sits above the next section, which is pulled up underneath it — the
-          card stays opaque until it has collapsed out of the way. */}
-      {/* Top-anchored, not centred. Two things depend on the card starting at
-          the top of this box and collapsing upward from its foot: the nav pill
-          is positioned to sit just inside the card's top edge, and the section
-          below is pulled up underneath, so only an opaque card covering the
-          box keeps it hidden until the card is out of the way. */}
-      <div
-        className="sticky top-0 z-10 h-[100dvh] p-3"
-        style={{ paddingTop: "calc(env(safe-area-inset-top) + 0.75rem)" }}
-      >
+      <div className="sticky top-0 z-10 h-[100dvh]">
         <div
-          className="relative w-full overflow-hidden rounded-[24px]"
+          className="relative w-full overflow-hidden"
           style={{
-            // Full height. A shorter card was a workaround for a landscape
-            // photograph that could not be cropped to this frame without
-            // losing its scene; this one is a portrait, which suits it.
             height: `${(100 - progress * COLLAPSE).toFixed(2)}%`,
-            boxShadow: "var(--shadow-paper)",
+            // Opaque. The opening lines are pulled up underneath the hero and
+            // are hidden only by whatever covers this box.
+            background: "var(--background)",
           }}
         >
-          {/* Covers the frame, unlike the line drawing that briefly sat here:
-              this illustration is painted edge to edge, so cropping it takes a
-              sleeve and a shoulder rather than cutting a figure out of empty
-              paper. Centred, and the crop is horizontal only — the card is the
-              taller shape, so the full height of the picture survives. */}
           <img
             src={couplePhoto}
             alt={`An illustrated portrait of ${COUPLE.bride} and ${COUPLE.groom}`}
             width={1000}
             height={1333}
-            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
+            // Sharp. A blur was tried here to soften the ground under the
+            // names and it softened the couple with it, which is the one thing
+            // on this screen that should be in focus. The veil below does that
+            // job instead.
+            className="absolute inset-0 h-full w-full object-cover object-center"
           />
 
-          {/* Enough shading under the type to hold white over a pale frame */}
+          {/* Light through the middle so the picture stays itself, drawn deeper
+              at the foot where the names sit. */}
           <div
             aria-hidden="true"
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(180deg, transparent 44%, oklch(0.28 0.03 60 / 0.18) 66%, oklch(0.22 0.03 60 / 0.5) 100%)",
+                "linear-gradient(180deg, oklch(0.2 0.03 55 / 0.34), oklch(0.2 0.03 55 / 0.14) 42%, oklch(0.2 0.03 55 / 0.28) 68%, oklch(0.18 0.03 55 / 0.6))",
             }}
           />
 
@@ -68,9 +63,9 @@ export function Hero({ live }: { live: boolean }) {
             }}
           >
             <h1
-              className="text-center font-display leading-[1.08] text-white italic"
+              className="text-center font-display leading-[1.08] whitespace-nowrap text-white italic"
               style={{
-                fontSize: "clamp(2.5rem, 12vw, 3.5rem)",
+                fontSize: "clamp(2.1rem, 11vw, 3.3rem)",
                 // Explicit: the h1 rule's 600 has no italic cut here and would fake-bold.
                 fontWeight: 400,
                 textShadow: "0 2px 18px oklch(0.24 0.03 60 / 0.4)",

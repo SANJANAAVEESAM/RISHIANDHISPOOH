@@ -127,7 +127,13 @@ function Opening() {
             >
               {WEDDING_DATE_RANGE}
             </p>
-            <Countdown />
+            <div className="flex flex-col items-center gap-4">
+              {/* A bare row of numerals does not say what it is counting to. */}
+              <p className="font-body text-[0.58rem] font-medium tracking-[0.28em] uppercase text-bronze-deep">
+                Until the Muhurtham
+              </p>
+              <Countdown />
+            </div>
           </div>
         }
       />
@@ -224,8 +230,20 @@ const WASH = 0.45;
  * scroll and a keyboard alike, and it degrades to an ordinary scroller if
  * snapping is unsupported.
  */
+/**
+ * The celebrations, on a thread you travel down.
+ *
+ * A spine suits this schedule better than the sideways track it replaces:
+ * five celebrations over two weeks are a sequence, and a vertical line says so
+ * without asking for a gesture. Everything is on the page at once — the swipe
+ * kept four of the five hidden behind an interaction people miss.
+ */
 function EventsSection() {
   const stops = EVENT_DAYS.flatMap((day) => day.events.map((event) => ({ day, event })));
+  // Which day's running order is open, by date. Held here rather than per row
+  // so that opening one closes another.
+  const [openDay, setOpenDay] = useState<string | null>(null);
+  const active = EVENT_DAYS.find((d) => d.date === openDay);
 
   return (
     <section
@@ -242,100 +260,141 @@ function EventsSection() {
             className="mt-3 font-display leading-none text-foreground"
             style={{ fontSize: "clamp(1.9rem, 8.6vw, 2.4rem)" }}
           >
-            What to expect
+            Event Lineup
           </h2>
+          {/* A bare list of dates does not say what it is or how much of it
+              there is. This does both in one line, before the thread starts. */}
+          <p className="mx-auto mt-4 max-w-[19rem] font-body text-[0.82rem] leading-relaxed text-foreground/75">
+            Five celebrations across two weeks. Here is each one in order — when
+            it begins, and where to find us.
+          </p>
         </div>
 
-        {/* Full-bleed: the track has to run past the page gutter or the last
-            card looks clipped rather than continuing off-screen. */}
-        <div
-          className="no-scrollbar mt-10 overflow-x-auto overflow-y-hidden"
-          style={{ scrollSnapType: "x mandatory" }}
-        >
-          <div className="flex w-max items-stretch gap-4 px-6">
-            {stops.map(({ day, event }, i) => {
-              const directions = venueMapsHref(event.venue);
-              return (
-                <article
-                  key={event.slug}
-                  className="relative flex w-[16.5rem] shrink-0 flex-col overflow-hidden rounded-[20px] px-5 pt-8 pb-6 text-center"
+        <div className="relative mt-10 pr-5 pl-12">
+          {/* The thread. Inset from the ends so it starts and stops at the
+              first and last dot rather than running off into nothing. */}
+          <span
+            aria-hidden="true"
+            className="absolute top-2 bottom-2 left-[1.35rem] w-px"
+            style={{ background: "color-mix(in oklab, var(--gold) 50%, transparent)" }}
+          />
+
+          {stops.map(({ day, event }) => {
+            const directions = venueMapsHref(event.venue);
+            return (
+              // relative, or the dot resolves against the whole track and all
+              // five land on the first row.
+              <div key={event.slug} className="relative pb-9 last:pb-0">
+                {/* The row is the containing block and the row starts at the
+                    track's 3rem padding, so reaching the spine at 1.35rem means
+                    going back 1.65rem rather than forward to it. */}
+                <span
+                  aria-hidden="true"
+                  className="absolute size-[11px] -translate-x-1/2 rounded-full"
                   style={{
-                    scrollSnapAlign: "center",
-                    background: "color-mix(in oklab, var(--ivory) 72%, transparent)",
-                    backdropFilter: "blur(3px)",
-                    WebkitBackdropFilter: "blur(3px)",
-                    border: "1px solid color-mix(in oklab, var(--gold) 34%, transparent)",
-                    boxShadow: "0 12px 30px -18px oklch(0.32 0.03 60 / 0.45)",
+                    left: "-1.65rem",
+                    background: "var(--gold)",
+                    marginTop: "0.4rem",
+                    boxShadow: "0 0 0 4px var(--background)",
                   }}
-                >
-                  {/* The same gold hairline the detail tiles carry, so the two
-                      grids on this page read as one family. */}
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-x-0 top-0 h-px"
-                    style={{ background: "var(--gradient-gold)" }}
-                  />
-                  {/* Position in the run, since the connecting thread went with
-                      the tiles — without it nothing said these were sequential. */}
-                  <span
-                    aria-hidden="true"
-                    className="absolute top-3 right-4 font-body text-[0.55rem] tracking-[0.16em] text-bronze-deep/55"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                />
 
-                  {/* Tracking eased back as the size went up: 0.22em on a
-                      larger face pushed "Wednesday, 19 August" close to the
-                      tile's inner width. */}
-                  <p className="font-body text-[0.72rem] font-semibold tracking-[0.16em] uppercase text-bronze-deep">
-                    {day.weekday}, {day.date}
-                  </p>
-                  <h3 className="mt-2 font-display text-[1.55rem] leading-tight font-semibold text-ink-strong">
-                    {event.name}
-                  </h3>
-                  <p className="mt-1 font-display text-[1.05rem] text-muted-foreground">
-                    {event.time}
-                  </p>
+                <p className="font-body text-[0.68rem] font-semibold tracking-[0.16em] uppercase text-bronze-deep">
+                  {day.weekday}, {day.date}
+                </p>
+                <h3 className="mt-1.5 font-display text-[1.5rem] leading-tight font-semibold text-ink-strong">
+                  {event.name}
+                </h3>
+                <p className="font-display text-[1rem] text-muted-foreground">{event.time}</p>
 
-                  {/* Pushes the venue to the tile's foot, so a two-line address
-                      on one card does not leave the others short. */}
-                  <div className="mt-auto pt-6">
-                    <span
-                      aria-hidden="true"
-                      className="mx-auto mb-5 block h-px w-10"
-                      style={{ background: "color-mix(in oklab, var(--gold) 55%, transparent)" }}
-                    />
-                    <p className="font-display text-[1.05rem] leading-tight text-ink-strong">
-                      {event.venue.name}
+                <div className="mt-3">
+                  <p className="font-display text-[1.05rem] leading-tight text-ink-strong">
+                    {event.venue.name}
+                  </p>
+                  {event.venue.address && (
+                    <p className="mt-1 font-body text-[0.74rem] leading-snug text-muted-foreground">
+                      {event.venue.address}
                     </p>
-                    {event.venue.address && (
-                      <p className="mt-1 font-body text-[0.74rem] leading-snug text-muted-foreground">
-                        {event.venue.address}
-                      </p>
-                    )}
+                  )}
+                  <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
                     {directions && (
                       <a
                         href={directions}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-3 inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
+                        className="inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
                       >
                         Directions <span aria-hidden="true">↗</span>
                       </a>
                     )}
+                    {day.schedule && (
+                      <button
+                        type="button"
+                        onClick={() => setOpenDay(day.date)}
+                        className="inline-flex items-center gap-1.5 font-body text-[0.58rem] font-medium tracking-[0.16em] uppercase text-bronze-deep underline underline-offset-4"
+                      >
+                        The day&rsquo;s timeline <span aria-hidden="true">→</span>
+                      </button>
+                    )}
                   </div>
-                </article>
-              );
-            })}
-          </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-
-        {/* Horizontal scrolling is easy to miss on a page that scrolls down. */}
-        <p className="mt-7 px-6 text-center font-body text-[0.6rem] tracking-[0.2em] uppercase text-muted-foreground/70">
-          <span aria-hidden="true">←</span> Swipe through the days{" "}
-          <span aria-hidden="true">→</span>
-        </p>
       </Reveal>
+
+      <Modal
+        open={active !== undefined}
+        onClose={() => setOpenDay(null)}
+        label={active ? `Timeline for ${active.date}` : "Timeline"}
+      >
+        {active && (
+          <div className="pt-2 pb-4">
+            <p className="text-center font-body text-[0.58rem] font-medium tracking-[0.26em] uppercase text-bronze-deep">
+              {active.weekday}, {active.date}
+            </p>
+            <h3 className="mt-3 text-center font-display text-[1.9rem] leading-tight text-foreground">
+              {active.events.map((e) => e.name).join(" & ")}
+            </h3>
+            <Ornament className="mt-5 mb-7" />
+
+            {/* A thread again, the same one the lineup uses, so the sheet reads
+                as a closer look at the row it came from rather than a new idea. */}
+            <div className="relative mx-auto max-w-[19rem] pl-9">
+              <span
+                aria-hidden="true"
+                className="absolute top-2 bottom-2 left-[0.3rem] w-px"
+                style={{ background: "color-mix(in oklab, var(--gold) 50%, transparent)" }}
+              />
+              {active.schedule?.map((item) => (
+                <div key={item.time + item.what} className="relative pb-6 last:pb-0">
+                  <span
+                    aria-hidden="true"
+                    className="absolute size-[9px] -translate-x-1/2 rounded-full"
+                    style={{
+                      left: "-2.95rem",
+                      marginTop: "0.35rem",
+                      background: "var(--gold)",
+                      boxShadow: "0 0 0 4px var(--card, var(--background))",
+                    }}
+                  />
+                  <p className="font-body text-[0.62rem] font-semibold tracking-[0.14em] uppercase text-bronze-deep">
+                    {item.time}
+                  </p>
+                  <p className="mt-0.5 font-display text-[1.25rem] leading-tight text-ink-strong">
+                    {item.what}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <p className="mx-auto mt-8 max-w-[18rem] text-center font-body text-[0.72rem] leading-relaxed text-muted-foreground">
+              Timings are a guide — do come a little before if you can.
+            </p>
+          </div>
+        )}
+      </Modal>
     </section>
   );
 }
