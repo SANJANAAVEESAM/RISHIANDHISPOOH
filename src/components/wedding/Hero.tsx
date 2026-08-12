@@ -36,15 +36,18 @@ export function Hero({ live }: { live: boolean }) {
             boxShadow: "var(--shadow-paper)",
           }}
         >
-          {/* A photograph again, so it fills the frame. Centred: the couple sit
-              in the middle of it, and the card's aspect varies enough between
-              phones that any bias would favour one handset over another. */}
+          {/* Held a little left of centre. The frame is about 0.48 against the
+              photograph's 0.80, so two fifths of its width goes — and only its
+              width, since the card is the taller shape, which is why the whole
+              sky survives. At 42% the bridge arch stays on one side and the
+              Charminar on the other; centred, the arch starts to go. */}
           <img
             src={couplePhoto}
-            alt={`${COUPLE.bride} and ${COUPLE.groom}`}
-            width={768}
-            height={1024}
-            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover object-center"
+            alt={`${COUPLE.bride} and ${COUPLE.groom} before the Charminar at dusk`}
+            width={1122}
+            height={1402}
+            className="animate-hero-zoom absolute inset-0 h-full w-full object-cover"
+            style={{ objectPosition: "42% 50%" }}
           />
 
           {/* Enough shading under the type to hold white over a pale frame */}

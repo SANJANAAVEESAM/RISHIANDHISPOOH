@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CelebrationsRouteImport } from './routes/celebrations'
-import { Route as HeroRouteImport } from './routes/hero'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +22,31 @@ const CelebrationsRoute = CelebrationsRouteImport.update({
   path: '/celebrations',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HeroRoute = HeroRouteImport.update({
-  id: '/hero',
-  path: '/hero',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/celebrations': typeof CelebrationsRoute
-  '/hero': typeof HeroRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/celebrations': typeof CelebrationsRoute
-  '/hero': typeof HeroRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/celebrations': typeof CelebrationsRoute
-  '/hero': typeof HeroRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/celebrations' | '/hero'
+  fullPaths: '/' | '/celebrations'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/celebrations' | '/hero'
-  id: '__root__' | '/' | '/celebrations' | '/hero'
+  to: '/' | '/celebrations'
+  id: '__root__' | '/' | '/celebrations'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CelebrationsRoute: typeof CelebrationsRoute
-  HeroRoute: typeof HeroRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,20 +65,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CelebrationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/hero': {
-      id: '/hero'
-      path: '/hero'
-      fullPath: '/hero'
-      preLoaderRoute: typeof HeroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CelebrationsRoute: CelebrationsRoute,
-  HeroRoute: HeroRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
