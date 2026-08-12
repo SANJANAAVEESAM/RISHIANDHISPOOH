@@ -74,7 +74,17 @@ export function Hero({ live }: { live: boolean }) {
               {COUPLE.bride} &amp; {COUPLE.groom}
             </h1>
 
-            <div className="mt-7 h-px w-full bg-white/45" />
+            {/* Fades out at both ends rather than stopping dead. A rule with
+                hard ends reads as a border across the picture; this reads as
+                a breath under the names. */}
+            <div
+              aria-hidden="true"
+              className="mt-7 h-px w-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent, oklch(1 0 0 / 0.55) 22%, oklch(1 0 0 / 0.55) 78%, transparent)",
+              }}
+            />
 
             <div className="mt-5 flex items-center justify-between">
               <span

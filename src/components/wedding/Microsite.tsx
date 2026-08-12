@@ -130,7 +130,7 @@ function Opening() {
             <div className="flex flex-col items-center gap-4">
               {/* A bare row of numerals does not say what it is counting to. */}
               <p className="font-body text-[0.58rem] font-medium tracking-[0.28em] uppercase text-bronze-deep">
-                Until the Muhurtham
+                Counting down to the wedding day
               </p>
               <Countdown />
             </div>
