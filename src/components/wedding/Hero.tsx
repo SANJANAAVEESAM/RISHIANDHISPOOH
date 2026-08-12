@@ -57,7 +57,9 @@ export function Hero({ live }: { live: boolean }) {
           <div
             className="absolute inset-x-0 bottom-0 px-[7%]"
             style={{
-              paddingBottom: "2.75rem",
+              // Lifted, and now clearing the home indicator as well — the flat
+              // 2.75rem it had sat under it on a modern phone.
+              paddingBottom: "calc(env(safe-area-inset-bottom) + 3.75rem)",
               opacity: live ? 1 : 0,
               transition: live ? "opacity 1100ms ease 250ms" : undefined,
             }}
