@@ -180,7 +180,7 @@ function RootComponent() {
             src={backdrop}
             alt=""
             width={800}
-            height={1103}
+            height={876}
             className="h-full w-full object-cover object-center"
             style={{ opacity: 0.34 }}
           />
