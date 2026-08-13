@@ -239,6 +239,12 @@ const WASH = 0.45;
  * without asking for a gesture. Everything is on the page at once — the swipe
  * kept four of the five hidden behind an interaction people miss.
  */
+const NUMBER_WORDS = [
+  "No", "One", "Two", "Three", "Four", "Five",
+  "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
+];
+const countWord = (n: number) => NUMBER_WORDS[n] ?? String(n);
+
 function EventsSection() {
   const stops = EVENT_DAYS.flatMap((day) => day.events.map((event) => ({ day, event })));
   // Which day's running order is open, by date. Held here rather than per row
@@ -264,10 +270,12 @@ function EventsSection() {
             Event Lineup
           </h2>
           {/* A bare list of dates does not say what it is or how much of it
-              there is. This does both in one line, before the thread starts. */}
+              there is. This does both in one line, before the thread starts.
+              The count is counted, not typed: it said five until a sixth
+              celebration was added, and nothing would have caught that. */}
           <p className="mx-auto mt-4 max-w-[19rem] font-body text-[0.82rem] leading-relaxed text-foreground/75">
-            Five celebrations across two weeks. Here is each one in order — when
-            it begins, and where to find us.
+            {countWord(stops.length)} celebrations across two weeks. Here is each
+            one in order — when it begins, and where to find us.
           </p>
         </div>
 

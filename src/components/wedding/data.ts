@@ -231,6 +231,19 @@ export const EVENT_DAYS: EventDay[] = [
         start: IST(7, 23, 9, 0),
         end: IST(7, 23, 12, 0),
       },
+      {
+        slug: "pellikuthuru",
+        name: "Pellikuthuru",
+        themeKey: "pellikuthuru",
+        time: "11:00 AM",
+        photosUrl: undefined,
+        venue: {
+          name: "Giridhar Apartment",
+          mapsUrl: "https://maps.app.goo.gl/xnBTT7wsKTikNgHZA",
+        },
+        start: IST(7, 23, 11, 0),
+        end: IST(7, 23, 14, 0),
+      },
     ],
   },
   {

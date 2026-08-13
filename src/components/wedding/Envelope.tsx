@@ -66,7 +66,7 @@ export function Envelope({ onOpened }: { onOpened: () => void }) {
         alt=""
         aria-hidden="true"
         width={800}
-        height={876}
+        height={1560}
         className="absolute inset-0 h-full w-full object-cover object-center"
       />
 
