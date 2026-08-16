@@ -32,7 +32,7 @@ const IST = (month: number, day: number, hour: number, minute: number) =>
 /** Muhurtham — 27 August, 10:05 AM IST. */
 export const WEDDING_DATE = IST(7, 27, 10, 5);
 
-export const WEDDING_DATE_RANGE = `From August 15th – 27th, ${WEDDING_YEAR}`;
+
 
 export const WHATSAPP_NUMBER = "18326686089";
 
@@ -157,26 +157,6 @@ const VENUE_RUSTIC: Venue = {
         };
 
 export const EVENT_DAYS: EventDay[] = [
-  {
-    date: "15 August",
-    weekday: "Saturday",
-    events: [
-      {
-        slug: "engagement",
-        name: "Engagement",
-        themeKey: "pellikuthuru",
-        time: "9:00 AM",
-        photosUrl: undefined,
-        venue: {
-          name: "Sree Vedha Banquet Hall",
-          address: "Above Ratnadeep, Kothapet, Hyderabad",
-          mapsQuery: "Sree Vedha Banquet Hall, Kothapet, Hyderabad",
-        },
-        start: IST(7, 15, 9, 0),
-        end: IST(7, 15, 12, 0),
-      },
-    ],
-  },
   {
     date: "19 August",
     weekday: "Wednesday",
@@ -305,6 +285,35 @@ export function venueMapsHref(venue: Venue): string | null {
   return null;
 }
 
+/**
+ * The span the celebrations cover, taken from the celebrations themselves.
+ *
+ * This used to be typed out. It said "From August 15th" and stayed saying it
+ * after the engagement on the 15th was removed, which is exactly the kind of
+ * quiet contradiction a guest notices and a developer does not.
+ */
+function ordinal(n: number): string {
+  if (n % 100 >= 11 && n % 100 <= 13) return `${n}th`;
+  return `${n}${["th", "st", "nd", "rd"][n % 10] ?? "th"}`;
+}
+
+export function celebrationSpan(): string {
+  const days = EVENT_DAYS.flatMap((d) => d.events.map((e) => e.start));
+  if (!days.length) return "";
+  const first = new Date(Math.min(...days.map((d) => d.getTime())));
+  const last = new Date(Math.max(...days.map((d) => d.getTime())));
+  const month = (d: Date) =>
+    d.toLocaleString("en-GB", { month: "long", timeZone: "Asia/Kolkata" });
+  const day = (d: Date) =>
+    Number(d.toLocaleString("en-GB", { day: "numeric", timeZone: "Asia/Kolkata" }));
+  const head = `From ${month(first)} ${ordinal(day(first))}`;
+  const tail =
+    month(first) === month(last)
+      ? `${ordinal(day(last))}`
+      : `${month(last)} ${ordinal(day(last))}`;
+  return `${head} – ${tail}, ${WEDDING_YEAR}`;
+}
+
 export const EVENTS: WeddingEvent[] = EVENT_DAYS.flatMap((day) => day.events);
 
 
@@ -312,8 +321,9 @@ export const FULL_WEDDING_CAL = {
   title: `${COUPLE_AMP} — Wedding Celebrations`,
   description: `Celebrations for the wedding of ${COUPLE_AMP}. Muhurtham on 27 August at 10:05 AM.`,
   location: "Hyderabad, Telangana",
-  startUtc: IST(7, 15, 9, 0).toISOString(),
-  endUtc: IST(7, 27, 14, 0).toISOString(),
+  // First and last of whatever the schedule actually contains.
+  startUtc: new Date(Math.min(...EVENTS.map((e) => e.start.getTime()))).toISOString(),
+  endUtc: new Date(Math.max(...EVENTS.map((e) => e.end.getTime()))).toISOString(),
 };
 
 export type DetailIcon = "bed" | "plane" | "camera" | "pin" | "calendar";

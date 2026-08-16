@@ -14,7 +14,7 @@ import {
   GALLERY_FOLDERS,
   HOTELS,
   hotelHref,
-  WEDDING_DATE_RANGE,
+  celebrationSpan,
   venueMapsHref,
   type WeddingEvent,
 } from "./data";
@@ -126,7 +126,7 @@ function Opening() {
               className="font-display leading-tight whitespace-nowrap text-foreground"
               style={{ fontSize: "clamp(1.35rem, 7.2vw, 1.9rem)" }}
             >
-              {WEDDING_DATE_RANGE}
+              {celebrationSpan()}
             </p>
             <div className="flex flex-col items-center gap-4">
               {/* A bare row of numerals does not say what it is counting to. */}
