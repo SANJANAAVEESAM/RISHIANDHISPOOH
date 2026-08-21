@@ -158,38 +158,6 @@ const VENUE_RUSTIC: Venue = {
 
 export const EVENT_DAYS: EventDay[] = [
   {
-    date: "19 August",
-    weekday: "Wednesday",
-    // Haldi and Sangeet share the day, so they share one running order.
-    schedule: [
-      { time: "9:00 AM", what: "Haldi" },
-      { time: "1:00 PM", what: "Lunch" },
-      { time: "7:00 PM", what: "Sangeet" },
-    ],
-    events: [
-      {
-        slug: "haldi",
-        name: "Haldi",
-        themeKey: "carnival",
-        time: "9:00 AM",
-        photosUrl: undefined,
-        venue: VENUE_RUSTIC,
-        start: IST(7, 19, 9, 0),
-        end: IST(7, 19, 12, 0),
-      },
-      {
-        slug: "sangeet",
-        name: "Sangeet",
-        themeKey: "masquerade",
-        time: "7:00 PM",
-        photosUrl: undefined,
-        venue: VENUE_RUSTIC,
-        start: IST(7, 19, 19, 0),
-        end: IST(7, 19, 23, 0),
-      },
-    ],
-  },
-  {
     date: "23 August",
     weekday: "Sunday",
     events: [
