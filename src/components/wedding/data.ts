@@ -47,6 +47,15 @@ export const WHATSAPP_NUMBER = "18326686089";
 export const SITE_URL = "https://rishiandhispooh.vercel.app";
 
 
+/**
+ * The blessing at the foot of the page, as a printed card carries one.
+ *
+ * The groom's parents, named as they are in the invitation above — kept here
+ * rather than typed into the closing section so the two cannot disagree about
+ * how they are spelled.
+ */
+export const WELL_WISHERS = "Archana and Ramakrishna";
+
 /** Credited in the closing line. */
 export const DESIGNER = "Sanjana Veesam";
 export const DESIGNER_URL = "https://www.instagram.com/sanjanaa_vv/";

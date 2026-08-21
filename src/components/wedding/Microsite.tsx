@@ -16,6 +16,7 @@ import {
   hotelHref,
   celebrationSpan,
   venueMapsHref,
+  WELL_WISHERS,
   type WeddingEvent,
 } from "./data";
 import { AddToCalendar } from "./AddToCalendar";
@@ -881,6 +882,18 @@ export function Microsite({ live }: { live: boolean }) {
                 alone against a grey would not have read as emphasis. */}
             <p className="mt-8 font-body text-[0.68rem] font-bold tracking-[0.3em] uppercase text-ink-strong">
               {COUPLE_AMP}
+            </p>
+
+            {/* The elders' blessing, the way a printed card closes. Quieter
+                than the couple's own sign-off above it, and separated by a
+                rule so it reads as a second voice rather than a subtitle. */}
+            <span
+              aria-hidden="true"
+              className="mx-auto mt-7 block h-px w-12"
+              style={{ background: "var(--gradient-gold)" }}
+            />
+            <p className="mt-6 font-body text-[0.62rem] tracking-[0.18em] text-muted-foreground">
+              Best wishes — {WELL_WISHERS}
             </p>
           </Reveal>
         </section>
