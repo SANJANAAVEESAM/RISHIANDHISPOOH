@@ -892,7 +892,7 @@ export function Microsite({ live }: { live: boolean }) {
               className="mx-auto mt-7 block h-px w-12"
               style={{ background: "var(--gradient-gold)" }}
             />
-            <p className="mt-6 font-body text-[0.62rem] tracking-[0.18em] text-muted-foreground">
+            <p className="mt-6 font-body text-[0.78rem] font-medium tracking-[0.1em] text-foreground/85">
               Best wishes from {WELL_WISHERS}
             </p>
           </Reveal>
